@@ -20,7 +20,6 @@
            z-index: 60;
        }
 
-
        /* Menú de Navegación Sticky */
        .sticky-nav {
            position: sticky;
@@ -30,7 +29,6 @@
            z-index: 50;
            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
        }
-
 
        .main-nav-btn {
            font-size: 10px;
@@ -49,7 +47,6 @@
        .main-nav-btn:hover:not(.active) {
            color: #64748b;
        }
-
 
        .sub-nav-container {
            background: #1e293b;
@@ -72,7 +69,6 @@
            color: white;
        }
 
-
        .dark-card {
            background: #0f172a;
            border-radius: 2.5rem;
@@ -80,7 +76,6 @@
            color: white;
            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
        }
-
 
        .range-bar-bg {
            background: rgba(255, 255, 255, 0.05);
@@ -116,7 +111,6 @@
            white-space: nowrap;
        }
 
-
        .table-card { background: white; border-radius: 3rem; padding: 3rem; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
        table { width: 100%; border-collapse: collapse; }
        th { color: #94a3b8; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; padding: 1.5rem 1rem; font-weight: 800; text-align: left; }
@@ -127,10 +121,8 @@
       
        .chart-wrapper { background: white; border-radius: 3rem; padding: 2.5rem; border: 1px solid #f1f5f9; }
 
-
        .tab-content { display: none; }
        .tab-content.active { display: block; }
-
 
        .icp-grid-icon {
            width: 40px;
@@ -146,7 +138,6 @@
        .industry-card { border: 1px solid #f1f5f9; transition: all 0.3s; }
        .industry-card:hover { border-color: #2563eb; transform: translateY(-2px); }
 
-
        .strategic-note {
            background: #fffbeb;
            border-left: 4px solid #f59e0b;
@@ -158,18 +149,22 @@
 </head>
 <body class="antialiased">
 
-
    <!-- FRANJA NEGRA SUPERIOR -->
    <header class="black-header">
        <div class="max-w-[1600px] mx-auto flex justify-between items-center">
-           <div class="bg-white/10 border border-white/20 px-6 py-2 rounded text-[10px] font-bold text-white uppercase italic tracking-widest">MTI Selling</div>
+
+           <!-- LOGO MTI (desde repo) -->
+           <img src="mti-logo.png" alt="MTI Selling" class="h-7 object-contain opacity-95">
+
            <div class="text-center">
                <h1 class="text-[11px] font-black text-white uppercase tracking-[0.5em] italic opacity-80">Reporte de Cierre de Gestión</h1>
            </div>
-           <div class="bg-white/10 border border-white/20 px-6 py-2 rounded text-[10px] font-bold text-white uppercase italic tracking-widest">ChatCenter</div>
+
+           <!-- LOGO CHATCENTER (desde repo) -->
+           <img src="chatcenter logo.png" alt="ChatCenter" class="h-7 object-contain opacity-95">
+
        </div>
    </header>
-
 
    <!-- MENÚ PRINCIPAL STICKY -->
    <nav class="sticky-nav px-8">
@@ -181,7 +176,6 @@
            <button class="main-nav-btn cursor-not-allowed opacity-50">Entregables</button>
        </div>
    </nav>
-
 
    <main class="max-w-[1600px] mx-auto p-12">
       
@@ -197,7 +191,6 @@
                    <button onclick="switchSubTab('reuniones')" id="sub-btn-reuniones" class="sub-nav-btn">2. Gestión Reuniones</button>
                </div>
            </div>
-
 
            <div id="sub-tab-iql" class="tab-content active">
                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -242,7 +235,6 @@
                    </div>
                </div>
            </div>
-
 
            <div id="sub-tab-reuniones" class="tab-content">
                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
@@ -300,15 +292,15 @@
                                </div>
 
                                <!-- NUEVO BLOQUE: PIPELINE ADICIONAL -->
-                               <div class="bg-amber-50 p-6 rounded-3xl border border-amber-100 px-8">
-                                   <div class="text-[10px] font-black text-amber-600 uppercase tracking-wider mb-2">
-                                       Pipeline adicional para FUP y Nurturing
+                               <div class="bg-amber-50 p-6 rounded-3xl border border-amber-100 flex flex-col gap-3 px-8">
+                                   <div class="text-[10px] font-black text-amber-600 uppercase tracking-wider">
+                                       Pipeline adicional para FUP y Nurturing:
                                    </div>
-                                   <div class="flex items-center justify-between">
+                                   <div class="flex justify-between items-center">
                                        <div class="text-[10px] font-black text-amber-700 uppercase italic">LinkedIn</div>
                                        <div class="text-3xl font-black text-amber-700 italic">65</div>
                                    </div>
-                                   <div class="mt-2 flex items-center justify-between">
+                                   <div class="flex justify-between items-center">
                                        <div class="text-[10px] font-black text-amber-700 uppercase italic">Campañas Email Marketing</div>
                                        <div class="text-3xl font-black text-amber-700 italic">117</div>
                                    </div>
@@ -358,7 +350,6 @@
            </div>
        </div>
 
-
        <!-- SECCIÓN 2: ICP -->
        <div id="main-tab-icp" class="main-tab-content" style="display: none;">
            <div class="flex justify-between items-end mb-12">
@@ -367,7 +358,6 @@
                    <p class="text-slate-400 font-bold uppercase tracking-widest text-sm mt-3">Estrategia de segmentación Enterprise B2C</p>
                </div>
            </div>
-
 
            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                <!-- Resumen Ejecutivo Superior -->
@@ -389,7 +379,6 @@
                        </div>
                    </div>
                </div>
-
 
                <div class="lg:col-span-4 space-y-8">
                    <div class="table-card">
@@ -414,7 +403,6 @@
                        </div>
                    </div>
 
-
                    <div class="dark-card bg-slate-900">
                        <h4 class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-6 italic">Puntos de Dolor (Pain Points)</h4>
                        <ul class="space-y-4">
@@ -437,7 +425,6 @@
                        </ul>
                    </div>
                </div>
-
 
                <div class="lg:col-span-8 flex flex-col gap-8">
                    <div class="table-card flex-1">
@@ -489,7 +476,6 @@
                                </div>
                            </div>
 
-
                            <div class="strategic-note">
                                <div class="flex items-center gap-3 mb-2">
                                    <span class="bg-amber-500 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase">Nota de Ejecución</span>
@@ -505,24 +491,18 @@
            </div>
        </div>
 
-
    </main>
-
 
    <script>
        Chart.register(ChartDataLabels);
-
 
        function switchMainTab(tab) {
            document.querySelectorAll('.main-tab-content').forEach(el => el.style.display = 'none');
            document.querySelectorAll('.main-nav-btn').forEach(el => el.classList.remove('active'));
            document.getElementById(`main-tab-${tab}`).style.display = 'block';
            document.getElementById(`main-btn-${tab}`).classList.add('active');
-          
-           // Volver arriba al cambiar de pestaña
            window.scrollTo({ top: 0, behavior: 'smooth' });
        }
-
 
        function switchSubTab(tab) {
            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -530,7 +510,6 @@
            document.getElementById(`sub-tab-${tab}`).classList.add('active');
            document.getElementById(`sub-btn-${tab}`).classList.add('active');
        }
-
 
        const ctxIQL = document.getElementById('chartIQL').getContext('2d');
        new Chart(ctxIQL, {
