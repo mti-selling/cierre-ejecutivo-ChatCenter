@@ -4,11 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- ✅ Título pestaña / vista previa -->
+  <!-- ✅ Título (lo que ves en la pestaña / vista previa del navegador) -->
   <title>ChatCenter - Reporte de Cierre</title>
-  <meta name="title" content="ChatCenter - Reporte de Cierre" />
+
+  <!-- (Opcional) Vista previa en redes -->
   <meta property="og:title" content="ChatCenter - Reporte de Cierre" />
-  <meta name="twitter:title" content="ChatCenter - Reporte de Cierre" />
+  <meta name="description" content="ChatCenter - Reporte de Cierre (MTI Selling). Dashboard consolidado." />
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -19,7 +20,7 @@
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #0f172a; margin: 0; }
 
-    /* Header */
+    /* ✅ Header negro sticky (se queda arriba) */
     .black-header {
       position: sticky;
       top: 0;
@@ -27,16 +28,16 @@
       color: white;
       padding: 0.75rem 2rem;
       border-bottom: 1px solid rgba(255,255,255,0.1);
-      z-index: 70;
+      z-index: 80;
     }
 
-    /* Menú */
+    /* ✅ Menú sticky (se queda fijo al hacer scroll) */
     .sticky-nav {
       position: sticky;
-      top: 64px; /* queda pegado debajo del header */
+      top: 56px; /* debajo del header negro */
       background: white;
       border-bottom: 1px solid #f1f5f9;
-      z-index: 60;
+      z-index: 70;
       box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
     }
 
@@ -53,16 +54,65 @@
     .main-nav-btn.active { color: #2563eb; border-bottom-color: #2563eb; }
     .main-nav-btn:hover:not(.active) { color: #64748b; }
 
-    .sub-nav-container { background: #1e293b; padding: 4px; border-radius: 12px; display: inline-flex; gap: 4px; }
-    .sub-nav-btn { padding: 8px 16px; border-radius: 8px; font-size: 10px; font-weight: 800; text-transform: uppercase; color: #94a3b8; transition: all 0.2s; }
+    .sub-nav-container {
+      background: #1e293b;
+      padding: 4px;
+      border-radius: 12px;
+      display: inline-flex;
+      gap: 4px;
+    }
+    .sub-nav-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #94a3b8;
+      transition: all 0.2s;
+    }
     .sub-nav-btn.active { background: #2563eb; color: white; }
 
-    .dark-card { background: #0f172a; border-radius: 2.5rem; padding: 2.5rem; color: white; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+    .dark-card {
+      background: #0f172a;
+      border-radius: 2.5rem;
+      padding: 2.5rem;
+      color: white;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
 
-    .range-bar-bg { background: rgba(255, 255, 255, 0.05); height: 32px; border-radius: 16px; position: relative; overflow: visible; border: 1px solid rgba(255,255,255,0.1); }
-    .range-highlight { position: absolute; height: 100%; background: rgba(16, 185, 129, 0.15); border-left: 1px solid #10b981; border-right: 1px solid #10b981; }
-    .marker-line { position: absolute; top: 0; bottom: 0; width: 3px; z-index: 20; box-shadow: 0 0 15px rgba(37, 99, 235, 0.5); }
-    .marker-tag { position: absolute; top: -30px; transform: translateX(-50%); font-size: 10px; font-weight: 900; padding: 4px 10px; border-radius: 6px; white-space: nowrap; }
+    .range-bar-bg {
+      background: rgba(255, 255, 255, 0.05);
+      height: 32px;
+      border-radius: 16px;
+      position: relative;
+      overflow: visible;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .range-highlight {
+      position: absolute;
+      height: 100%;
+      background: rgba(16, 185, 129, 0.15);
+      border-left: 1px solid #10b981;
+      border-right: 1px solid #10b981;
+    }
+    .marker-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      z-index: 20;
+      box-shadow: 0 0 15px rgba(37, 99, 235, 0.5);
+    }
+    .marker-tag {
+      position: absolute;
+      top: -30px;
+      transform: translateX(-50%);
+      font-size: 10px;
+      font-weight: 900;
+      padding: 4px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
 
     .table-card { background: white; border-radius: 3rem; padding: 3rem; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
     table { width: 100%; border-collapse: collapse; }
@@ -77,60 +127,165 @@
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    .icp-grid-icon { width: 40px; height: 40px; background: #f1f5f9; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+    .icp-grid-icon {
+      width: 40px;
+      height: 40px;
+      background: #f1f5f9;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
     .tag-blue { background: #eff6ff; color: #2563eb; padding: 4px 12px; border-radius: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
     .industry-card { border: 1px solid #f1f5f9; transition: all 0.3s; }
     .industry-card:hover { border-color: #2563eb; transform: translateY(-2px); }
 
-    .strategic-note { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 0 1.5rem 1.5rem 0; margin-top: 2rem; }
+    .strategic-note {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+      padding: 1.5rem;
+      border-radius: 0 1.5rem 1.5rem 0;
+      margin-top: 2rem;
+    }
 
-    /* Perfiles */
-    .profile-card { background: white; border-radius: 3rem; padding: 2.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; }
-    .profile-photo { width: 92px; height: 92px; border-radius: 24px; object-fit: cover; border: 2px solid #e2e8f0; background: #f8fafc; }
-    .spark-wrap { height: 50px; }
-    .mini-kpi { border: 1px solid #f1f5f9; border-radius: 1.5rem; padding: 1.25rem; background: #ffffff; }
-    .post-card { border: 1px solid #f1f5f9; border-radius: 1.5rem; padding: 1.25rem; background: #fbfdff; }
-    .pill { font-size: 10px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase; padding: 6px 10px; border-radius: 999px; }
+    /* =========================
+       ✅ Perfiles styles
+    ========================== */
+    .profile-card{
+      background:#ffffff;
+      border:1px solid #f1f5f9;
+      border-radius:3rem;
+      padding:2.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+    .profile-photo{
+      width:72px;
+      height:72px;
+      border-radius:22px;
+      object-fit:cover;
+      border:1px solid #e2e8f0;
+    }
+    .pill{
+      font-size:10px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      padding:6px 10px;
+      border-radius:999px;
+    }
+    .post-card{
+      background:#fff;
+      border:1px solid #f1f5f9;
+      border-radius:1.5rem;
+      padding:1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    }
+    .spark-wrap{
+      background:#0f172a08;
+      border:1px solid #e2e8f0;
+      border-radius:16px;
+      padding:10px 12px;
+    }
+    .spark-title{
+      font-size:10px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      color:#64748b;
+    }
+    .spark-kpi{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:6px;
+    }
+    .spark-val{
+      font-size:18px;
+      font-weight:900;
+      color:#0f172a;
+      font-style:italic;
+    }
+    .spark-delta{
+      font-size:11px;
+      font-weight:900;
+      color:#047857;
+    }
+    .spark-canvas{
+      width:100%;
+      height:42px;
+      margin-top:8px;
+    }
+
+    /* =========================
+       ✅ Campañas - tabla oscura
+    ========================== */
+    .campaigns-dark-table{
+      background: radial-gradient(1200px 600px at 30% 0%, rgba(37,99,235,0.18), rgba(15,23,42,0.98) 55%), #0b1220;
+      border-radius: 3rem;
+      padding: 2.5rem;
+      box-shadow: 0 25px 40px rgba(0,0,0,0.25);
+    }
+    .campaigns-head{ background: rgba(255,255,255,0.02); }
+    .campaigns-body tr{ border-top: 1px solid rgba(255,255,255,0.06); }
+    .campaigns-body tr:hover{ background: rgba(255,255,255,0.03); }
+    .campaigns-foot{ background: rgba(37,99,235,0.18); }
+    .mini-avatar{
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .flag{ font-size:14px; line-height:1; }
   </style>
 </head>
 
 <body class="antialiased">
 
-  <!-- FRANJA NEGRA SUPERIOR (✅ solo logos, SIN recuadros) -->
+  <!-- ✅ FRANJA NEGRA SUPERIOR (logos desde tu repo) -->
   <header class="black-header">
     <div class="max-w-[1600px] mx-auto flex justify-between items-center">
+
+      <!-- MTI (logo + texto, sin cajas) -->
       <div class="flex items-center gap-4">
-        <!-- ✅ MTI más grande -->
-        <img src="mti-logo.png" alt="MTI Selling" class="h-12 w-auto opacity-95" />
+        <img src="mti-logo.png" alt="MTI Selling" style="height:32px; width:auto;" />
+        <div class="text-[10px] font-black text-white uppercase italic tracking-widest opacity-90">MTI Selling</div>
       </div>
 
+      <!-- Título centrado -->
       <div class="text-center">
-        <h1 class="text-[11px] font-black text-white uppercase tracking-[0.5em] italic opacity-90">
-          ChatCenter - Reporte de Cierre
+        <h1 class="text-[11px] font-black text-white uppercase tracking-[0.5em] italic opacity-80">
+          CHATCENTER - REPORTE DE CIERRE
         </h1>
       </div>
 
+      <!-- ChatCenter (texto + logo) -->
       <div class="flex items-center gap-4">
-        <!-- ✅ ChatCenter visible (mismo estilo, más grande) -->
-        <img src="chatcenter_logo.png" alt="ChatCenter" class="h-12 w-auto opacity-95" />
+        <div class="text-[10px] font-black text-white uppercase italic tracking-widest opacity-90">ChatCenter</div>
+        <img src="chatcenter_logo.png" alt="ChatCenter" style="height:34px; width:auto;" />
       </div>
+
     </div>
   </header>
 
-  <!-- MENÚ PRINCIPAL STICKY (✅ queda fijo al scrollear) -->
+  <!-- ✅ MENÚ PRINCIPAL STICKY -->
   <nav class="sticky-nav px-8">
     <div class="max-w-[1600px] mx-auto flex justify-center">
       <button onclick="switchMainTab('objetivo')" id="main-btn-objetivo" class="main-nav-btn active">Objetivo y Alcance</button>
       <button onclick="switchMainTab('icp')" id="main-btn-icp" class="main-nav-btn">ICP</button>
       <button onclick="switchMainTab('perfiles')" id="main-btn-perfiles" class="main-nav-btn">Perfiles</button>
-      <button class="main-nav-btn cursor-not-allowed opacity-50">Campañas</button>
+      <button onclick="switchMainTab('campanas')" id="main-btn-campanas" class="main-nav-btn">Campañas</button>
       <button class="main-nav-btn cursor-not-allowed opacity-50">Entregables</button>
     </div>
   </nav>
 
   <main class="max-w-[1600px] mx-auto p-12">
 
-    <!-- SECCIÓN 1: OBJETIVO Y ALCANCE -->
+    <!-- =========================================================
+         SECCIÓN 1: OBJETIVO Y ALCANCE
+    ========================================================== -->
     <div id="main-tab-objetivo" class="main-tab-content active">
       <div class="flex justify-between items-end mb-12">
         <div>
@@ -143,6 +298,7 @@
         </div>
       </div>
 
+      <!-- Sub: IQL -->
       <div id="sub-tab-iql" class="tab-content active">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div class="lg:col-span-4 flex flex-col gap-6">
@@ -188,6 +344,7 @@
         </div>
       </div>
 
+      <!-- Sub: Reuniones -->
       <div id="sub-tab-reuniones" class="tab-content">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           <div class="dark-card">
@@ -248,24 +405,19 @@
                   <div class="text-4xl font-black text-emerald-600 italic">21</div>
                 </div>
 
-                <!-- ✅ Pipeline adicional -->
+                <!-- ✅ NUEVO: Pipeline adicional FUP + Nurturing -->
                 <div class="bg-amber-50 p-6 rounded-3xl border border-amber-100 px-8">
-                  <div class="flex items-center justify-between">
-                    <div class="text-[10px] font-black text-amber-600 uppercase tracking-wider">Pipeline adicional (FUP & Nurturing)</div>
-                    <div class="text-[10px] font-black text-amber-700 uppercase italic">Listo para empujar</div>
+                  <div class="text-[10px] font-black text-amber-600 uppercase tracking-wider mb-1">Pipeline adicional (FUP + Nurturing)</div>
+                  <div class="flex justify-between items-center mt-2">
+                    <div class="text-[11px] font-black text-slate-700 uppercase italic">LinkedIn</div>
+                    <div class="text-3xl font-black text-amber-700 italic">65</div>
                   </div>
-                  <div class="mt-4 grid grid-cols-2 gap-3">
-                    <div class="bg-white/70 border border-amber-100 rounded-2xl p-4">
-                      <div class="text-[9px] font-black text-slate-500 uppercase tracking-widest">LinkedIn</div>
-                      <div class="text-3xl font-black text-slate-900 italic mt-1">65 <span class="text-[11px] not-italic text-slate-500 font-bold">leads</span></div>
-                    </div>
-                    <div class="bg-white/70 border border-amber-100 rounded-2xl p-4">
-                      <div class="text-[9px] font-black text-slate-500 uppercase tracking-widest">Email Marketing</div>
-                      <div class="text-3xl font-black text-slate-900 italic mt-1">117 <span class="text-[11px] not-italic text-slate-500 font-bold">leads</span></div>
-                    </div>
+                  <div class="flex justify-between items-center mt-2">
+                    <div class="text-[11px] font-black text-slate-700 uppercase italic">Email Marketing</div>
+                    <div class="text-3xl font-black text-amber-700 italic">117</div>
                   </div>
                 </div>
-                <!-- ✅ FIN -->
+
               </div>
             </div>
           </div>
@@ -311,9 +463,10 @@
       </div>
     </div>
 
-    <!-- SECCIÓN 2: ICP (SIN CAMBIOS de contenido) -->
-    <div id="main-tab-icp" class="main-tab-content" style="display: none;">
-      <!-- (se mantiene igual que antes) -->
+    <!-- =========================================================
+         SECCIÓN 2: ICP
+    ========================================================== -->
+    <div id="main-tab-icp" class="main-tab-content" style="display:none;">
       <div class="flex justify-between items-end mb-12">
         <div>
           <h2 class="text-5xl font-black text-slate-900 uppercase italic tracking-tighter leading-none">2. Perfil de Cliente Ideal (ICP)</h2>
@@ -321,136 +474,234 @@
         </div>
       </div>
 
-      <!-- (tu bloque ICP original completo) -->
-      <!-- 👇 Pegado tal cual lo dejaste originalmente en tu repo -->
-      <!-- ... -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-12 dark-card mb-4 flex flex-col md:flex-row gap-8 items-center justify-between bg-gradient-to-r from-slate-900 to-blue-900">
+          <div class="max-w-3xl">
+            <h3 class="text-2xl font-bold mb-4">Objetivo Estratégico</h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+              Identificar y segmentar empresas Enterprise B2C con alto potencial de adopción. Enfoque en organizaciones que buscan incrementar ventas y optimizar costos mediante la automatización conversacional con <b>IA + Supervisión Humana 24/7</b>, bajo un modelo de <b>Revenue Share</b>.
+            </p>
+          </div>
+          <div class="flex gap-4">
+            <div class="bg-white/10 px-6 py-4 rounded-2xl text-center border border-white/10">
+              <div class="text-[10px] uppercase font-bold text-blue-400 mb-1">Ciclo Venta</div>
+              <div class="text-2xl font-black">6-12 m</div>
+            </div>
+            <div class="bg-white/10 px-6 py-4 rounded-2xl text-center border border-white/10">
+              <div class="text-[10px] uppercase font-bold text-emerald-400 mb-1">Ticket Prom.</div>
+              <div class="text-2xl font-black">100K-500K</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 space-y-8">
+          <div class="table-card">
+            <div class="icp-grid-icon"><span class="text-blue-600 font-black">🌍</span></div>
+            <h4 class="text-lg font-black uppercase italic mb-4">Presencia Regional</h4>
+            <div class="flex flex-wrap gap-2">
+              <span class="tag-blue">Argentina</span>
+              <span class="tag-blue">Brasil</span>
+              <span class="tag-blue">Colombia</span>
+              <span class="tag-blue">México</span>
+              <span class="tag-blue">Perú</span>
+            </div>
+            <div class="mt-8 pt-6 border-t border-slate-100">
+              <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-bold text-slate-500 uppercase">Tamaño Empresa</span>
+                <span class="text-xs font-black text-blue-600 uppercase">+500 Empleados</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-slate-500 uppercase">Modelo Negocio</span>
+                <span class="text-xs font-black text-blue-600 uppercase italic">Enterprise B2C</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dark-card bg-slate-900">
+            <h4 class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-6 italic">Puntos de Dolor (Pain Points)</h4>
+            <ul class="space-y-4">
+              <li class="flex items-start gap-3"><span class="text-blue-400 mt-1">▸</span><p class="text-[11px] font-bold text-slate-300 uppercase">Altos costos en canales tradicionales.</p></li>
+              <li class="flex items-start gap-3"><span class="text-blue-400 mt-1">▸</span><p class="text-[11px] font-bold text-slate-300 uppercase">Dificultad para escalar ventas digitales.</p></li>
+              <li class="flex items-start gap-3"><span class="text-blue-400 mt-1">▸</span><p class="text-[11px] font-bold text-slate-300 uppercase">Presión competitiva por automatización.</p></li>
+              <li class="flex items-start gap-3"><span class="text-blue-400 mt-1">▸</span><p class="text-[11px] font-bold text-slate-300 uppercase">Desalineación entre IA y Talento Humano.</p></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="lg:col-span-8 flex flex-col gap-8">
+          <div class="table-card flex-1">
+            <h4 class="text-xl font-black uppercase italic mb-8 border-b pb-4">Estructura de Decisión (C-Level & VPs)</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <h5 class="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-4">Key Decision Makers</h5>
+                <div class="grid grid-cols-2 gap-2">
+                  <div class="bg-slate-50 p-3 rounded-xl text-center text-[10px] font-black uppercase">CEO</div>
+                  <div class="bg-slate-50 p-3 rounded-xl text-center text-[10px] font-black uppercase">CPO</div>
+                  <div class="bg-slate-50 p-3 rounded-xl text-center text-[10px] font-black uppercase">CTO</div>
+                  <div class="bg-slate-50 p-3 rounded-xl text-center text-[10px] font-black uppercase">CMO</div>
+                  <div class="bg-slate-50 p-3 rounded-xl text-center text-[10px] font-black uppercase col-span-2">VPs Ventas/Marketing</div>
+                </div>
+              </div>
+              <div>
+                <h5 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Influenciadores / Operación</h5>
+                <ul class="text-[11px] font-bold text-slate-600 space-y-2 italic">
+                  <li>• Directores de Innovación</li>
+                  <li>• Transformación Digital y Tecnología</li>
+                  <li>• Customer Experience (CX)</li>
+                  <li>• Gerentes de Operaciones Digitales</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-12">
+              <h5 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">Sectores Foco</h5>
+              <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="industry-card p-4 rounded-2xl text-center"><div class="text-2xl mb-2">📞</div><div class="text-[9px] font-black uppercase">Telecom</div></div>
+                <div class="industry-card p-4 rounded-2xl text-center"><div class="text-2xl mb-2">🛡️</div><div class="text-[9px] font-black uppercase">Seguros</div></div>
+                <div class="industry-card p-4 rounded-2xl text-center"><div class="text-2xl mb-2">🛍️</div><div class="text-[9px] font-black uppercase">Retail</div></div>
+                <div class="industry-card p-4 rounded-2xl text-center"><div class="text-2xl mb-2">🏦</div><div class="text-[9px] font-black uppercase">Finanzas</div></div>
+                <div class="industry-card p-4 rounded-2xl text-center"><div class="text-2xl mb-2">🏥</div><div class="text-[9px] font-black uppercase">Health</div></div>
+              </div>
+
+              <div class="strategic-note">
+                <div class="flex items-center gap-3 mb-2">
+                  <span class="bg-amber-500 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase">Nota de Ejecución</span>
+                  <span class="text-[10px] font-black text-amber-600 uppercase tracking-widest italic">Ajuste de Segmentación</span>
+                </div>
+                <p class="text-xs font-bold text-amber-900 leading-relaxed italic">
+                  Entre el segundo y tercer mes de ejecución, el enfoque por industrias verticales se ajustó a un modelo <b>Cross</b>, permitiendo mayor flexibilidad y captación de oportunidades en cualquier sector con volumen Enterprise B2C.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <!-- SECCIÓN 3: PERFILES -->
+    <!-- =========================================================
+         SECCIÓN 3: PERFILES
+    ========================================================== -->
     <div id="main-tab-perfiles" class="main-tab-content" style="display:none;">
       <div class="flex justify-between items-end mb-12">
         <div>
           <h2 class="text-5xl font-black text-slate-900 uppercase italic tracking-tighter leading-none">3. Perfiles</h2>
-          <p class="text-slate-400 font-bold uppercase tracking-widest text-sm mt-3">Ranking por IQL + desempeño de contenido</p>
+          <p class="text-slate-400 font-bold uppercase tracking-widest text-sm mt-3">Ranking por IQL + rangos + performance de contenido</p>
         </div>
       </div>
 
-      <!-- Catalina (✅ KPIs + IQL + Top Posts) -->
-<div class="profile-card mb-8">
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+      <!-- Catalina (1° por IQL) -->
+      <div class="profile-card mb-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          <div class="lg:col-span-3">
+            <div class="flex items-center gap-5">
+              <img src="Cata%20Foto.jpeg" class="profile-photo" alt="Catalina" />
+              <div>
+                <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Perfil</div>
+                <div class="text-2xl font-black text-slate-900 italic">Catalina</div>
+                <div class="mt-3 inline-flex flex-wrap items-center gap-2">
+                  <span class="pill bg-emerald-50 text-emerald-700 border border-emerald-100">IQL: 48</span>
+                </div>
 
-    <!-- Columna 1: Perfil + KPIs -->
-    <div class="lg:col-span-3">
-      <div class="flex items-center gap-5">
-        <img src="Cata%20Foto.jpeg" class="profile-photo" alt="Catalina" />
-        <div>
-          <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Perfil</div>
-          <div class="text-2xl font-black text-slate-900 italic">Catalina</div>
+                <div class="mt-5 space-y-3">
+                  <div class="spark-wrap">
+                    <div class="spark-title">Impresiones</div>
+                    <div class="spark-kpi">
+                      <div class="spark-val">23.628</div>
+                      <div class="spark-delta">▲ 460,5%</div>
+                    </div>
+                    <canvas id="sp_cata_imp" class="spark-canvas"></canvas>
+                  </div>
 
-          <div class="mt-3 inline-flex flex-wrap items-center gap-2">
-            <span class="pill bg-emerald-50 text-emerald-700 border border-emerald-100">IQL: 48</span>
-          </div>
+                  <div class="spark-wrap">
+                    <div class="spark-title">Interacciones</div>
+                    <div class="spark-kpi">
+                      <div class="spark-val">751</div>
+                      <div class="spark-delta">▲ 310,4%</div>
+                    </div>
+                    <canvas id="sp_cata_int" class="spark-canvas"></canvas>
+                  </div>
 
-          <!-- KPIs (Catalina) -->
-          <div class="mt-4 grid grid-cols-1 gap-3">
-            <div class="bg-white border border-slate-100 rounded-2xl px-4 py-3">
-              <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Impresiones</div>
-              <div class="flex items-end justify-between mt-1">
-                <div class="text-xl font-black text-slate-900 italic">23.628</div>
-                <div class="text-[11px] font-black text-emerald-700">▲ 460,5%</div>
+                  <div class="spark-wrap">
+                    <div class="spark-title">Seguidores (total)</div>
+                    <div class="spark-kpi">
+                      <div class="spark-val">2.124</div>
+                      <div class="spark-delta">▲ 107,1%</div>
+                    </div>
+                    <canvas id="sp_cata_fol" class="spark-canvas"></canvas>
+                  </div>
+
+                  <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest italic">
+                    Periodo: 01 Sep 2025 — 27 Feb 2026
+                  </div>
+                </div>
+
               </div>
             </div>
+          </div>
 
-            <div class="bg-white border border-slate-100 rounded-2xl px-4 py-3">
-              <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Interacciones</div>
-              <div class="flex items-end justify-between mt-1">
-                <div class="text-xl font-black text-slate-900 italic">751</div>
-                <div class="text-[11px] font-black text-emerald-700">▲ 310,4%</div>
+          <div class="lg:col-span-6">
+            <div class="bg-slate-50 border border-slate-100 rounded-[2.5rem] p-8">
+              <div class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Rangos históricos vs hoy</div>
+              <div class="text-xl font-black text-slate-900 italic mb-8">Aceptación • Respuesta • Interés • Conversión</div>
+
+              <div class="mb-6">
+                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Aceptación</span><span>25% — 38%</span></div>
+                <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
+                  <div class="range-highlight" style="left: 25%; width: 13%;"></div>
+                  <div class="marker-line bg-blue-600" style="left: 35%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 35%</div></div>
+                </div>
+              </div>
+
+              <div class="mb-6">
+                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Respuesta</span><span>27% — 35%</span></div>
+                <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
+                  <div class="range-highlight" style="left: 27%; width: 8%;"></div>
+                  <div class="marker-line bg-blue-600" style="left: 30%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 30%</div></div>
+                </div>
+              </div>
+
+              <div class="mb-6">
+                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Interés</span><span>15% — 18%</span></div>
+                <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
+                  <div class="range-highlight" style="left: 15%; width: 3%;"></div>
+                  <div class="marker-line bg-blue-600" style="left: 16%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 16%</div></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Conversión</span><span>18% — 28%</span></div>
+                <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
+                  <div class="range-highlight" style="left: 18%; width: 10%;"></div>
+                  <div class="marker-line bg-blue-600" style="left: 27%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 27%</div></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="lg:col-span-3">
+            <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Top 3 posteos (por impresiones)</div>
+            <div class="space-y-3">
+              <div class="post-card">
+                <div class="text-[11px] font-black text-slate-700">Hace unos meses inicié un nuevo capítulo como Gerente de Ventas para Latinoamérica en Chat Center...</div>
+                <div class="mt-3 text-[11px] font-black text-emerald-700">2.223 impresiones</div>
+              </div>
+              <div class="post-card">
+                <div class="text-[11px] font-black text-slate-700">¡Qué espacio tan valioso el de Fashion Digital Talks 2025! 🚀 El encuentro dejó claro algo: el futuro del e-commerce...</div>
+                <div class="mt-3 text-[11px] font-black text-emerald-700">2.097 impresiones</div>
+              </div>
+              <div class="post-card">
+                <div class="text-[11px] font-black text-slate-700">Me alegra compartirles que este 12 de septiembre estaré en ExpoHuila Tech 2025 como speaker en el bloque de Emprendimiento Digital...</div>
+                <div class="mt-3 text-[11px] font-black text-emerald-700">1.275 impresiones</div>
               </div>
             </div>
-
-            <div class="bg-white border border-slate-100 rounded-2xl px-4 py-3">
-              <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Seguidores (total)</div>
-              <div class="flex items-end justify-between mt-1">
-                <div class="text-xl font-black text-slate-900 italic">2.124</div>
-                <div class="text-[11px] font-black text-emerald-700">▲ 107,1%</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest italic">
-            Periodo: 01 Sep 2025 — 27 Feb 2026
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Columna 2: Rangos -->
-    <div class="lg:col-span-6">
-      <div class="bg-slate-50 border border-slate-100 rounded-[2.5rem] p-8">
-        <div class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Rangos históricos vs hoy</div>
-        <div class="text-xl font-black text-slate-900 italic mb-8">Aceptación • Respuesta • Interés • Conversión</div>
-
-        <div class="mb-6">
-          <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Aceptación</span><span>25% — 38%</span></div>
-          <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
-            <div class="range-highlight" style="left: 25%; width: 13%;"></div>
-            <div class="marker-line bg-blue-600" style="left: 35%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 35%</div></div>
-          </div>
-        </div>
-
-        <div class="mb-6">
-          <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Respuesta</span><span>27% — 35%</span></div>
-          <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
-            <div class="range-highlight" style="left: 27%; width: 8%;"></div>
-            <div class="marker-line bg-blue-600" style="left: 30%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 30%</div></div>
-          </div>
-        </div>
-
-        <div class="mb-6">
-          <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Interés</span><span>15% — 18%</span></div>
-          <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
-            <div class="range-highlight" style="left: 15%; width: 3%;"></div>
-            <div class="marker-line bg-blue-600" style="left: 16%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 16%</div></div>
-          </div>
-        </div>
-
-        <div>
-          <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Conversión</span><span>18% — 28%</span></div>
-          <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
-            <div class="range-highlight" style="left: 18%; width: 10%;"></div>
-            <div class="marker-line bg-blue-600" style="left: 27%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 27%</div></div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Columna 3: Top Posts -->
-    <div class="lg:col-span-3">
-      <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Top 3 posteos (por impresiones)</div>
-      <div class="space-y-3">
-        <div class="post-card">
-          <div class="text-[11px] font-black text-slate-700">Hace unos meses inicié un nuevo capítulo como Gerente de Ventas para Latinoamérica en Chat Center...</div>
-          <div class="mt-3 text-[11px] font-black text-emerald-700">2.223 impresiones</div>
-        </div>
-
-        <div class="post-card">
-          <div class="text-[11px] font-black text-slate-700">¡Qué espacio tan valioso el de Fashion Digital Talks 2025! 🚀 El encuentro dejó claro algo: el futuro del e-commerce...</div>
-          <div class="mt-3 text-[11px] font-black text-emerald-700">2.097 impresiones</div>
-        </div>
-
-        <div class="post-card">
-          <div class="text-[11px] font-black text-slate-700">Me alegra compartirles que este 12 de septiembre estaré en ExpoHuila Tech 2025 como speaker en el bloque de Emprendimiento Digital...</div>
-          <div class="mt-3 text-[11px] font-black text-emerald-700">1.275 impresiones</div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-      <!-- Juliana -->
+      <!-- Juliana (2° por IQL) -->
       <div class="profile-card mb-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           <div class="lg:col-span-3">
@@ -459,38 +710,43 @@
               <div>
                 <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Perfil</div>
                 <div class="text-2xl font-black text-slate-900 italic">Juliana</div>
-                <div class="mt-3 inline-flex items-center gap-3">
+                <div class="mt-3 inline-flex flex-wrap items-center gap-2">
                   <span class="pill bg-emerald-50 text-emerald-700 border border-emerald-100">IQL: 19</span>
                 </div>
-              </div>
-            </div>
 
-            <div class="mt-8 grid grid-cols-1 gap-3">
-              <div class="mini-kpi">
-                <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Impresiones</div>
-                <div class="flex items-end justify-between mt-2">
-                  <div class="text-2xl font-black text-slate-900 italic">24.089</div>
-                  <div class="text-[11px] font-black text-emerald-600">▲ 7.266,7%</div>
-                </div>
-                <div class="spark-wrap mt-3"><canvas id="spark_juli_imp"></canvas></div>
-              </div>
+                <div class="mt-5 space-y-3">
+                  <div class="spark-wrap">
+                    <div class="spark-title">Impresiones</div>
+                    <div class="spark-kpi">
+                      <div class="spark-val">24.089</div>
+                      <div class="spark-delta">▲ 7.266,7%</div>
+                    </div>
+                    <canvas id="sp_juli_imp" class="spark-canvas"></canvas>
+                  </div>
 
-              <div class="mini-kpi">
-                <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Interacciones</div>
-                <div class="flex items-end justify-between mt-2">
-                  <div class="text-2xl font-black text-slate-900 italic">985</div>
-                  <div class="text-[11px] font-black text-emerald-600">▲ 98.600%</div>
-                </div>
-                <div class="spark-wrap mt-3"><canvas id="spark_juli_eng"></canvas></div>
-              </div>
+                  <div class="spark-wrap">
+                    <div class="spark-title">Interacciones</div>
+                    <div class="spark-kpi">
+                      <div class="spark-val">985</div>
+                      <div class="spark-delta">▲ 98.600%</div>
+                    </div>
+                    <canvas id="sp_juli_int" class="spark-canvas"></canvas>
+                  </div>
 
-              <div class="mini-kpi">
-                <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Seguidores</div>
-                <div class="flex items-end justify-between mt-2">
-                  <div class="text-2xl font-black text-slate-900 italic">11.365</div>
-                  <div class="text-[11px] font-black text-emerald-600">▲ 4,4%</div>
+                  <div class="spark-wrap">
+                    <div class="spark-title">Seguidores (total)</div>
+                    <div class="spark-kpi">
+                      <div class="spark-val">11.365</div>
+                      <div class="spark-delta">▲ 4,4%</div>
+                    </div>
+                    <canvas id="sp_juli_fol" class="spark-canvas"></canvas>
+                  </div>
+
+                  <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest italic">
+                    Periodo: 01 Sep 2025 — 27 Feb 2026
+                  </div>
                 </div>
-                <div class="spark-wrap mt-3"><canvas id="spark_juli_fol"></canvas></div>
+
               </div>
             </div>
           </div>
@@ -531,6 +787,7 @@
                   <div class="marker-line bg-blue-600" style="left: 6%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 6%</div></div>
                 </div>
               </div>
+
             </div>
           </div>
 
@@ -538,15 +795,15 @@
             <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Top 3 posteos (por impresiones)</div>
             <div class="space-y-3">
               <div class="post-card">
-                <div class="text-[11px] font-black text-slate-700">Liderar operações não se resume a otimizar processos…</div>
+                <div class="text-[11px] font-black text-slate-700">Liderar operações não se resume a otimizar processos. Trata-se de aprender a fazer tudo funcionar...</div>
                 <div class="mt-3 text-[11px] font-black text-emerald-700">2.737 impresiones</div>
               </div>
               <div class="post-card">
-                <div class="text-[11px] font-black text-slate-700">Wow… essa foto me traz lembranças que ainda ressoam…</div>
+                <div class="text-[11px] font-black text-slate-700">Wow... essa foto me traz lembranças que ainda ressoam em mim. Não apenas pelo lugar...</div>
                 <div class="mt-3 text-[11px] font-black text-emerald-700">1.561 impresiones</div>
               </div>
               <div class="post-card">
-                <div class="text-[11px] font-black text-slate-700">Ao longo da minha carreira profissional tive a oportunidade…</div>
+                <div class="text-[11px] font-black text-slate-700">Ao longo da minha carreira profissional, tive a oportunidade de liderar equipes, redesenhar processos...</div>
                 <div class="mt-3 text-[11px] font-black text-emerald-700">1.525 impresiones</div>
               </div>
             </div>
@@ -554,7 +811,7 @@
         </div>
       </div>
 
-      <!-- Gonzalo (✅ foto real) -->
+      <!-- Gonzalo (3° por IQL) -->
       <div class="profile-card mb-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           <div class="lg:col-span-3">
@@ -563,21 +820,23 @@
               <div>
                 <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Perfil</div>
                 <div class="text-2xl font-black text-slate-900 italic">Gonzalo</div>
-                <div class="mt-3 inline-flex items-center gap-3">
+                <div class="mt-3 inline-flex flex-wrap items-center gap-2">
                   <span class="pill bg-emerald-50 text-emerald-700 border border-emerald-100">IQL: 15</span>
                 </div>
-              </div>
-            </div>
 
-            <div class="mt-8 grid grid-cols-1 gap-3">
-              <div class="mini-kpi">
-                <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Seguidores</div>
-                <div class="flex items-end justify-between mt-2">
-                  <div class="text-2xl font-black text-slate-900 italic">30.301</div>
-                  <div class="text-[11px] font-black text-slate-400 italic">sin evolución</div>
+                <div class="mt-5 space-y-3">
+                  <div class="spark-wrap">
+                    <div class="spark-title">Seguidores (total)</div>
+                    <div class="spark-kpi">
+                      <div class="spark-val">30.301</div>
+                      <div class="text-[11px] font-black text-slate-500">—</div>
+                    </div>
+                    <!-- sin evolución disponible -->
+                    <div class="mt-2 text-[10px] font-bold text-slate-500 italic">Sin acceso a evolución (solo total).</div>
+                  </div>
                 </div>
+
               </div>
-              <div class="text-[11px] font-bold text-slate-500 italic">Impresiones / Interacciones: pendiente (no hay evolución).</div>
             </div>
           </div>
 
@@ -617,21 +876,31 @@
                   <div class="marker-line bg-blue-600" style="left: 28%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 28%</div></div>
                 </div>
               </div>
+
             </div>
           </div>
 
           <div class="lg:col-span-3">
             <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Top 3 posteos (por impresiones)</div>
             <div class="space-y-3">
-              <div class="post-card"><div class="text-[11px] font-black text-slate-700">Mucho de lo que hoy se dice sobre IA es una promesa inflada…</div><div class="mt-3 text-[11px] font-black text-emerald-700">1.151 impresiones</div></div>
-              <div class="post-card"><div class="text-[11px] font-black text-slate-700">Una de las cosas que más disfruto hacer es andar en bicicleta…</div><div class="mt-3 text-[11px] font-black text-emerald-700">939 impresiones</div></div>
-              <div class="post-card"><div class="text-[11px] font-black text-slate-700">En mi día a día me encuentro con muchas empresas que afirman…</div><div class="mt-3 text-[11px] font-black text-emerald-700">472 impresiones</div></div>
+              <div class="post-card">
+                <div class="text-[11px] font-black text-slate-700">Mucho de lo que hoy se dice sobre IA es una promesa inflada...</div>
+                <div class="mt-3 text-[11px] font-black text-emerald-700">1.151 impresiones</div>
+              </div>
+              <div class="post-card">
+                <div class="text-[11px] font-black text-slate-700">Una de las cosas que más disfruto hacer es andar en bicicleta...</div>
+                <div class="mt-3 text-[11px] font-black text-emerald-700">939 impresiones</div>
+              </div>
+              <div class="post-card">
+                <div class="text-[11px] font-black text-slate-700">En mi día a día me encuentro con muchas empresas que afirman estar integrando IA...</div>
+                <div class="mt-3 text-[11px] font-black text-emerald-700">472 impresiones</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Ramiro -->
+      <!-- Ramiro (4° por IQL) -->
       <div class="profile-card mb-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           <div class="lg:col-span-3">
@@ -640,38 +909,43 @@
               <div>
                 <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Perfil</div>
                 <div class="text-2xl font-black text-slate-900 italic">Ramiro</div>
-                <div class="mt-3 inline-flex items-center gap-3">
+                <div class="mt-3 inline-flex flex-wrap items-center gap-2">
                   <span class="pill bg-emerald-50 text-emerald-700 border border-emerald-100">IQL: 5</span>
                 </div>
-              </div>
-            </div>
 
-            <div class="mt-8 grid grid-cols-1 gap-3">
-              <div class="mini-kpi">
-                <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Impresiones</div>
-                <div class="flex items-end justify-between mt-2">
-                  <div class="text-2xl font-black text-slate-900 italic">11.346</div>
-                  <div class="text-[11px] font-black text-emerald-600">▲ 315,8%</div>
-                </div>
-                <div class="spark-wrap mt-3"><canvas id="spark_rami_imp"></canvas></div>
-              </div>
+                <div class="mt-5 space-y-3">
+                  <div class="spark-wrap">
+                    <div class="spark-title">Impresiones</div>
+                    <div class="spark-kpi">
+                      <div class="spark-val">11.346</div>
+                      <div class="spark-delta">▲ 315,8%</div>
+                    </div>
+                    <canvas id="sp_rami_imp" class="spark-canvas"></canvas>
+                  </div>
 
-              <div class="mini-kpi">
-                <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Interacciones</div>
-                <div class="flex items-end justify-between mt-2">
-                  <div class="text-2xl font-black text-slate-900 italic">371</div>
-                  <div class="text-[11px] font-black text-emerald-600">▲ 415,3%</div>
-                </div>
-                <div class="spark-wrap mt-3"><canvas id="spark_rami_eng"></canvas></div>
-              </div>
+                  <div class="spark-wrap">
+                    <div class="spark-title">Interacciones</div>
+                    <div class="spark-kpi">
+                      <div class="spark-val">371</div>
+                      <div class="spark-delta">▲ 415,3%</div>
+                    </div>
+                    <canvas id="sp_rami_int" class="spark-canvas"></canvas>
+                  </div>
 
-              <div class="mini-kpi">
-                <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Seguidores</div>
-                <div class="flex items-end justify-between mt-2">
-                  <div class="text-2xl font-black text-slate-900 italic">5.133</div>
-                  <div class="text-[11px] font-black text-emerald-600">▲ 9,1%</div>
+                  <div class="spark-wrap">
+                    <div class="spark-title">Seguidores (total)</div>
+                    <div class="spark-kpi">
+                      <div class="spark-val">5.133</div>
+                      <div class="spark-delta">▲ 9,1%</div>
+                    </div>
+                    <canvas id="sp_rami_fol" class="spark-canvas"></canvas>
+                  </div>
+
+                  <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest italic">
+                    Periodo: 01 Dic 2025 — 27 Feb 2026
+                  </div>
                 </div>
-                <div class="spark-wrap mt-3"><canvas id="spark_rami_fol"></canvas></div>
+
               </div>
             </div>
           </div>
@@ -712,22 +986,32 @@
                   <div class="marker-line bg-blue-600" style="left: 20%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 20%</div></div>
                 </div>
               </div>
+
             </div>
           </div>
 
           <div class="lg:col-span-3">
             <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Top 3 posteos (por impresiones)</div>
             <div class="space-y-3">
-              <div class="post-card"><div class="text-[11px] font-black text-slate-700">Em mais de 20 anos trabalhando em operações…</div><div class="mt-3 text-[11px] font-black text-emerald-700">3.005 impresiones</div></div>
-              <div class="post-card"><div class="text-[11px] font-black text-slate-700">Liderar operações multiculturais não se trata…</div><div class="mt-3 text-[11px] font-black text-emerald-700">1.623 impresiones</div></div>
-              <div class="post-card"><div class="text-[11px] font-black text-slate-700">No meu trabalho diário, vejo um sinal claro…</div><div class="mt-3 text-[11px] font-black text-emerald-700">848 impresiones</div></div>
+              <div class="post-card">
+                <div class="text-[11px] font-black text-slate-700">Em mais de 20 anos trabalhando em operações (e agora liderando no ChatCenter Services BR | PT)...</div>
+                <div class="mt-3 text-[11px] font-black text-emerald-700">3.005 impresiones</div>
+              </div>
+              <div class="post-card">
+                <div class="text-[11px] font-black text-slate-700">Liderar operações multiculturais não se trata de replicar um modelo e esperar que ele funcione...</div>
+                <div class="mt-3 text-[11px] font-black text-emerald-700">1.623 impresiones</div>
+              </div>
+              <div class="post-card">
+                <div class="text-[11px] font-black text-slate-700">No meu trabalho diário, vejo um sinal claro... A IA não está falhando por falta de capacidade...</div>
+                <div class="mt-3 text-[11px] font-black text-emerald-700">848 impresiones</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Martin (✅ foto real + último) -->
-      <div class="profile-card">
+      <!-- Martin (último, sin acceso) -->
+      <div class="profile-card mb-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           <div class="lg:col-span-3">
             <div class="flex items-center gap-5">
@@ -735,17 +1019,17 @@
               <div>
                 <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Perfil</div>
                 <div class="text-2xl font-black text-slate-900 italic">Martin</div>
-                <div class="mt-3 inline-flex items-center gap-3">
+                <div class="mt-3 inline-flex flex-wrap items-center gap-2">
                   <span class="pill bg-emerald-50 text-emerald-700 border border-emerald-100">IQL: 6</span>
+                </div>
+                <div class="mt-4 text-[11px] font-bold text-slate-500 italic">
+                  Sin acceso al resto de métricas (impresiones, interacciones, seguidores y top posts).
                 </div>
               </div>
             </div>
-            <div class="mt-8 text-[11px] font-bold text-slate-500 italic">
-              Sin acceso al resto de métricas (impresiones / interacciones / seguidores / top posts).
-            </div>
           </div>
 
-          <div class="lg:col-span-9">
+          <div class="lg:col-span-6">
             <div class="bg-slate-50 border border-slate-100 rounded-[2.5rem] p-8">
               <div class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Rangos históricos vs hoy</div>
               <div class="text-xl font-black text-slate-900 italic mb-8">Aceptación • Respuesta • Interés • Conversión</div>
@@ -784,6 +1068,233 @@
 
             </div>
           </div>
+
+          <div class="lg:col-span-3">
+            <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Top 3 posteos</div>
+            <div class="space-y-3">
+              <div class="post-card">
+                <div class="text-[11px] font-black text-slate-700">Sin acceso</div>
+                <div class="mt-3 text-[11px] font-bold text-slate-500 italic">—</div>
+              </div>
+              <div class="post-card">
+                <div class="text-[11px] font-black text-slate-700">Sin acceso</div>
+                <div class="mt-3 text-[11px] font-bold text-slate-500 italic">—</div>
+              </div>
+              <div class="post-card">
+                <div class="text-[11px] font-black text-slate-700">Sin acceso</div>
+                <div class="mt-3 text-[11px] font-bold text-slate-500 italic">—</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- =========================================================
+         SECCIÓN 4: CAMPAÑAS
+    ========================================================== -->
+    <div id="main-tab-campanas" class="main-tab-content" style="display:none;">
+
+      <div class="flex justify-between items-end mb-12">
+        <div>
+          <h2 class="text-5xl font-black text-slate-900 uppercase italic tracking-tighter leading-none">4. Campañas</h2>
+          <p class="text-slate-400 font-bold uppercase tracking-widest text-sm mt-3">Distribución + ejecución por canal</p>
+        </div>
+      </div>
+
+      <!-- Nota estratégica -->
+      <div class="bg-white border border-slate-100 rounded-[3rem] p-10 shadow-sm mb-10">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center font-black text-blue-700">i</div>
+          <div class="flex-1">
+            <div class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Cómo se configuraron</div>
+            <div class="text-xl font-black text-slate-900 italic mb-3">Personalización por industria, país y perfil</div>
+            <p class="text-[12px] font-bold text-slate-600 leading-relaxed">
+              Las campañas se personalizaron por <span class="font-black text-slate-900">industrias</span> y <span class="font-black text-slate-900">países</span>.
+              En <span class="font-black text-slate-900">LinkedIn</span>, según el perfil ejecutor, se configuró la <span class="font-black text-slate-900">cantidad de toques</span> de la secuencia.
+              En <span class="font-black text-slate-900">Email Marketing</span>, se ejecutaron flujos de prospección y campañas de apoyo (visual + convocatoria).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bloques Linkedin / Email -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-10">
+
+        <div class="lg:col-span-6 bg-white border border-slate-100 rounded-[3rem] p-10 shadow-sm">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Canal</div>
+              <div class="text-2xl font-black text-slate-900 italic">LinkedIn</div>
+            </div>
+            <span class="inline-flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest">
+              Secuencias por perfil
+            </span>
+          </div>
+
+          <ul class="space-y-3 text-[12px] font-bold text-slate-600">
+            <li class="flex gap-3"><span class="text-blue-600 font-black">▸</span> Personalización por industria y país.</li>
+            <li class="flex gap-3"><span class="text-blue-600 font-black">▸</span> Cantidad de toques configurada según el perfil ejecutor.</li>
+            <li class="flex gap-3"><span class="text-blue-600 font-black">▸</span> Segmentación dinámica para maximizar relevancia en mensajes.</li>
+          </ul>
+        </div>
+
+        <div class="lg:col-span-6 bg-white border border-slate-100 rounded-[3rem] p-10 shadow-sm">
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Canal</div>
+              <div class="text-2xl font-black text-slate-900 italic">Email Marketing</div>
+            </div>
+            <span class="inline-flex items-center gap-2 bg-emerald-600 text-white px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest">
+              Klenty + apoyo
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-5">
+              <div class="text-[10px] font-black uppercase tracking-widest text-emerald-700 mb-2">Klenty</div>
+              <div class="text-[12px] font-bold text-slate-700 leading-relaxed">
+                <span class="font-black">7 campañas</span> de <span class="font-black">4 toques</span>.
+                <br><span class="font-black">Brasil (4):</span> 1 Retail, 1 Financieras, 2 Generales.
+                <br><span class="font-black">LATAM (3):</span> 1 Retail, 1 Financieras, 1 General.
+              </div>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5">
+              <div class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">Campañas de apoyo</div>
+              <div class="text-[12px] font-bold text-slate-700 leading-relaxed">
+                1 campaña <span class="font-black">visual Brasil</span> con <span class="font-black">OnePage</span>.
+                <br>1 campaña <span class="font-black">general</span> de apoyo para <span class="font-black">convocatoria a Webinar</span>.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Tabla distribución por perfil y país -->
+      <div class="campaigns-dark-table">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-1.5 h-6 bg-blue-500 rounded-full"></div>
+          <div class="text-white text-xl font-black uppercase tracking-widest">Distribución por Perfil y País</div>
+        </div>
+
+        <div class="overflow-hidden rounded-[2.5rem] border border-white/10">
+          <table class="w-full border-collapse">
+            <thead>
+              <tr class="campaigns-head">
+                <th class="text-left px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Perfil</th>
+
+                <th class="text-center px-4 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                  <span class="inline-flex items-center gap-2"><span class="flag">🇵🇪</span> Perú</span>
+                </th>
+                <th class="text-center px-4 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                  <span class="inline-flex items-center gap-2"><span class="flag">🇲🇽</span> México</span>
+                </th>
+                <th class="text-center px-4 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                  <span class="inline-flex items-center gap-2"><span class="flag">🇨🇴</span> Colombia</span>
+                </th>
+                <th class="text-center px-4 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                  <span class="inline-flex items-center gap-2"><span class="flag">🇧🇷</span> Brasil</span>
+                </th>
+                <th class="text-center px-4 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                  <span class="inline-flex items-center gap-2"><span class="flag">🇦🇷</span> Argentina</span>
+                </th>
+
+                <th class="text-right px-8 py-5 text-[10px] font-black uppercase tracking-widest text-slate-400">Total Perfil</th>
+              </tr>
+            </thead>
+
+            <tbody class="campaigns-body">
+              <tr>
+                <td class="px-8 py-6">
+                  <div class="flex items-center gap-4">
+                    <img class="mini-avatar" src="Cata%20Foto.jpeg" alt="Catalina" />
+                    <div class="text-white font-black">Catalina Vélez</div>
+                  </div>
+                </td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">5</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">4</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">8</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">—</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">5</td>
+                <td class="text-right px-8 py-6 text-blue-300 font-black">12</td>
+              </tr>
+
+              <tr>
+                <td class="px-8 py-6">
+                  <div class="flex items-center gap-4">
+                    <img class="mini-avatar" src="Foto%20Juli.jpeg" alt="Juliana" />
+                    <div class="text-white font-black">Juliana Vale</div>
+                  </div>
+                </td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">—</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">—</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">—</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">8</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">—</td>
+                <td class="text-right px-8 py-6 text-blue-300 font-black">8</td>
+              </tr>
+
+              <tr>
+                <td class="px-8 py-6">
+                  <div class="flex items-center gap-4">
+                    <img class="mini-avatar" src="Foto%20Gonzalo.jpeg" alt="Gonzalo" />
+                    <div class="text-white font-black">Gonzalo Báez</div>
+                  </div>
+                </td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">—</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">6</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">—</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">—</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">3</td>
+                <td class="text-right px-8 py-6 text-blue-300 font-black">7</td>
+              </tr>
+
+              <tr>
+                <td class="px-8 py-6">
+                  <div class="flex items-center gap-4">
+                    <img class="mini-avatar" src="Ramiro%20foto.jpeg" alt="Ramiro" />
+                    <div class="text-white font-black">Ramiro Correa</div>
+                  </div>
+                </td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">—</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">—</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">—</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">5</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">—</td>
+                <td class="text-right px-8 py-6 text-blue-300 font-black">5</td>
+              </tr>
+
+              <tr>
+                <td class="px-8 py-6">
+                  <div class="flex items-center gap-4">
+                    <img class="mini-avatar" src="Martin%20foto.jpeg" alt="Martin" />
+                    <div class="text-white font-black">Martin Stancampiano</div>
+                  </div>
+                </td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">—</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">2</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">—</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">—</td>
+                <td class="text-center px-4 py-6 text-slate-200 font-bold">4</td>
+                <td class="text-right px-8 py-6 text-blue-300 font-black">4</td>
+              </tr>
+            </tbody>
+
+            <tfoot>
+              <tr class="campaigns-foot">
+                <td class="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-slate-300">Suma total país</td>
+                <td class="text-center px-4 py-6 text-white font-black">5</td>
+                <td class="text-center px-4 py-6 text-white font-black">11</td>
+                <td class="text-center px-4 py-6 text-white font-black">8</td>
+                <td class="text-center px-4 py-6 text-white font-black">10</td>
+                <td class="text-center px-4 py-6 text-white font-black">9</td>
+                <td class="text-right px-8 py-6 text-blue-300 font-black text-2xl">29</td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
       </div>
 
@@ -809,17 +1320,43 @@
       document.getElementById(`sub-btn-${tab}`).classList.add('active');
     }
 
-    // Chart IQL
+    /* =========================
+       IQL Chart (principal)
+    ========================== */
     const ctxIQL = document.getElementById('chartIQL').getContext('2d');
     new Chart(ctxIQL, {
       type: 'bar',
       data: {
         labels: ['Sept', 'Oct', 'Nov', 'Dic', 'Ene', 'Feb'],
         datasets: [
-          { label: 'IQL Real', data: [14, 20, 8, 12, 18, 21], backgroundColor: '#2563eb', borderRadius: 12, barThickness: 50,
-            datalabels: { anchor: 'end', align: 'top', color: '#1e293b', font: { weight: '800', size: 16 }, offset: 4 } },
-          { label: 'Tendencia', data: [13, 16, 14, 14, 18, 21.5], type: 'line', borderColor: '#34d399', borderWidth: 5, pointRadius: 0, tension: 0.4, datalabels: { display: false } },
-          { label: 'Objetivo', data: [13.3, 13.3, 13.3, 13.3, 13.3, 13.3], type: 'line', borderColor: '#f87171', borderDash: [8, 4], borderWidth: 2, pointRadius: 0, datalabels: { display: false } }
+          {
+            label: 'IQL Real',
+            data: [14, 20, 8, 12, 18, 21],
+            backgroundColor: '#2563eb',
+            borderRadius: 12,
+            barThickness: 50,
+            datalabels: { anchor: 'end', align: 'top', color: '#1e293b', font: { weight: '800', size: 16 }, offset: 4 }
+          },
+          {
+            label: 'Tendencia',
+            data: [13, 16, 14, 14, 18, 21.5],
+            type: 'line',
+            borderColor: '#34d399',
+            borderWidth: 5,
+            pointRadius: 0,
+            tension: 0.4,
+            datalabels: { display: false }
+          },
+          {
+            label: 'Objetivo',
+            data: [13.3, 13.3, 13.3, 13.3, 13.3, 13.3],
+            type: 'line',
+            borderColor: '#f87171',
+            borderDash: [8, 4],
+            borderWidth: 2,
+            pointRadius: 0,
+            datalabels: { display: false }
+          }
         ]
       },
       options: {
@@ -833,35 +1370,56 @@
       }
     });
 
-    // ✅ Sparklines SIN números (no labels, no ticks)
-    function sparkline(canvasId, points) {
+    /* =========================
+       ✅ Sparkline helper (sin números 0,1,2... / sin ejes)
+    ========================== */
+    function sparkLine(canvasId, series) {
       const el = document.getElementById(canvasId);
       if (!el) return;
-      new Chart(el.getContext('2d'), {
+      const ctx = el.getContext('2d');
+
+      new Chart(ctx, {
         type: 'line',
-        data: { labels: points.map(()=>''), datasets: [{ data: points, borderColor: '#2563eb', borderWidth: 2, pointRadius: 0, tension: 0.35 }] },
+        data: {
+          labels: series.map((_, i) => i + 1),
+          datasets: [{
+            data: series,
+            borderColor: '#2563eb',
+            borderWidth: 3,
+            pointRadius: 0,
+            tension: 0.35,
+            fill: false
+          }]
+        },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           plugins: { legend: { display: false }, tooltip: { enabled: false } },
           scales: {
-            x: { display: false, ticks: { display: false }, grid: { display: false } },
-            y: { display: false, ticks: { display: false }, grid: { display: false } }
+            x: { display: false, grid: { display: false }, ticks: { display: false } },
+            y: { display: false, grid: { display: false }, ticks: { display: false } }
           }
         }
       });
     }
 
-    // Juliana
-    sparkline('spark_juli_imp', [0,1,2,3,5,9,13,16,19,24]);
-    sparkline('spark_juli_eng', [0,0,1,1,2,4,6,8,9,10]);
-    sparkline('spark_juli_fol', [0,0,0,1,2,3,4,6,8,9]);
+    /* =========================
+       Catalina sparklines (ascendentes tipo LinkedIn)
+       (son aproximaciones visuales para simular acumulado)
+    ========================== */
+    sparkLine('sp_cata_imp', [0, 400, 900, 1600, 2500, 3800, 5200, 7200, 9800, 12600, 15800, 19600, 23628]);
+    sparkLine('sp_cata_int', [0, 20, 60, 110, 160, 220, 300, 390, 480, 560, 640, 710, 751]);
+    sparkLine('sp_cata_fol', [0, 30, 80, 140, 220, 330, 470, 620, 780, 980, 1250, 1650, 2124]);
 
+    /* Juliana sparklines */
+    sparkLine('sp_juli_imp', [0, 300, 900, 1800, 3200, 5200, 7600, 10300, 13500, 17000, 20500, 23200, 24089]);
+    sparkLine('sp_juli_int', [0, 15, 40, 85, 140, 210, 290, 380, 520, 660, 790, 910, 985]);
+    sparkLine('sp_juli_fol', [0, 60, 120, 180, 250, 330, 420, 520, 650, 780, 900, 1040, 11365]);
 
-    // Ramiro
-    sparkline('spark_rami_imp', [0,0,1,1,2,8,10,11,12,13]);
-    sparkline('spark_rami_eng', [0,0,0,1,1,4,5,6,7,7.5]);
-    sparkline('spark_rami_fol', [0,0,0,1,2,3,3.2,3.4,4.2,4.5]);
+    /* Ramiro sparklines */
+    sparkLine('sp_rami_imp', [0, 80, 160, 260, 420, 650, 980, 1450, 2400, 5200, 7800, 9800, 11346]);
+    sparkLine('sp_rami_int', [0, 5, 10, 16, 24, 35, 50, 70, 110, 170, 240, 310, 371]);
+    sparkLine('sp_rami_fol', [0, 20, 40, 70, 110, 160, 220, 290, 320, 340, 380, 430, 5133]);
   </script>
 
 </body>
