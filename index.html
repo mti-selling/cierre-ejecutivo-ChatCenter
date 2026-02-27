@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Reporte Maestro MTI - Dashboard Consolidado</title>
+   <script src="https://cdn.tailwindcss.com"></script>
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+   <style>
+       body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #0f172a; margin: 0; }
+      
+       /* Cabecera Negra Superior */
+       .black-header {
+           background-color: #0f172a;
+           color: white;
+           padding: 0.75rem 2rem;
+           border-bottom: 1px solid rgba(255,255,255,0.1);
+           z-index: 60;
+       }
+
+
+       /* Menú de Navegación Sticky */
+       .sticky-nav {
+           position: sticky;
+           top: 0;
+           background: white;
+           border-bottom: 1px solid #f1f5f9;
+           z-index: 50;
+           box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+       }
+
+
+       .main-nav-btn {
+           font-size: 10px;
+           font-weight: 800;
+           text-transform: uppercase;
+           letter-spacing: 0.1em;
+           padding: 1.25rem 1.5rem;
+           color: #94a3b8;
+           transition: all 0.3s;
+           border-bottom: 3px solid transparent;
+       }
+       .main-nav-btn.active {
+           color: #2563eb;
+           border-bottom-color: #2563eb;
+       }
+       .main-nav-btn:hover:not(.active) {
+           color: #64748b;
+       }
+
+
+       .sub-nav-container {
+           background: #1e293b;
+           padding: 4px;
+           border-radius: 12px;
+           display: inline-flex;
+           gap: 4px;
+       }
+       .sub-nav-btn {
+           padding: 8px 16px;
+           border-radius: 8px;
+           font-size: 10px;
+           font-weight: 800;
+           text-transform: uppercase;
+           color: #94a3b8;
+           transition: all 0.2s;
+       }
+       .sub-nav-btn.active {
+           background: #2563eb;
+           color: white;
+       }
+
+
+       .dark-card {
+           background: #0f172a;
+           border-radius: 2.5rem;
+           padding: 2.5rem;
+           color: white;
+           box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+       }
+
+
+       .range-bar-bg {
+           background: rgba(255, 255, 255, 0.05);
+           height: 32px;
+           border-radius: 16px;
+           position: relative;
+           overflow: visible;
+           border: 1px solid rgba(255,255,255,0.1);
+       }
+       .range-highlight {
+           position: absolute;
+           height: 100%;
+           background: rgba(16, 185, 129, 0.15);
+           border-left: 1px solid #10b981;
+           border-right: 1px solid #10b981;
+       }
+       .marker-line {
+           position: absolute;
+           top: 0;
+           bottom: 0;
+           width: 3px;
+           z-index: 20;
+           box-shadow: 0 0 15px rgba(37, 99, 235, 0.5);
+       }
+       .marker-tag {
+           position: absolute;
+           top: -30px;
+           transform: translateX(-50%);
+           font-size: 10px;
+           font-weight: 900;
+           padding: 4px 10px;
+           border-radius: 6px;
+           white-space: nowrap;
+       }
+
+
+       .table-card { background: white; border-radius: 3rem; padding: 3rem; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+       table { width: 100%; border-collapse: collapse; }
+       th { color: #94a3b8; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; padding: 1.5rem 1rem; font-weight: 800; text-align: left; }
+       td { padding: 1.25rem 1rem; font-size: 11px; font-weight: 700; border-bottom: 1px solid #f8fafc; color: #475569; }
+       .row-month { font-style: italic; font-weight: 900; color: #1e293b; text-transform: uppercase; }
+       .total-row { background: #0f172a; color: white; border-radius: 1rem; }
+       .total-row td { color: white; border: none; padding: 1.5rem 1rem; text-transform: uppercase; font-weight: 800; }
+      
+       .chart-wrapper { background: white; border-radius: 3rem; padding: 2.5rem; border: 1px solid #f1f5f9; }
+
+
+       .tab-content { display: none; }
+       .tab-content.active { display: block; }
+
+
+       .icp-grid-icon {
+           width: 40px;
+           height: 40px;
+           background: #f1f5f9;
+           border-radius: 10px;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           margin-bottom: 1rem;
+       }
+       .tag-blue { background: #eff6ff; color: #2563eb; padding: 4px 12px; border-radius: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+       .industry-card { border: 1px solid #f1f5f9; transition: all 0.3s; }
+       .industry-card:hover { border-color: #2563eb; transform: translateY(-2px); }
+
+
+       .strategic-note {
+           background: #fffbeb;
+           border-left: 4px solid #f59e0b;
+           padding: 1.5rem;
+           border-radius: 0 1.5rem 1.5rem 0;
+           margin-top: 2rem;
+       }
+   </style>
+</head>
+<body class="antialiased">
+
+
+   <!-- FRANJA NEGRA SUPERIOR -->
+   <header class="black-header">
+       <div class="max-w-[1600px] mx-auto flex justify-between items-center">
+           <div class="bg-white/10 border border-white/20 px-6 py-2 rounded text-[10px] font-bold text-white uppercase italic tracking-widest">MTI Selling</div>
+           <div class="text-center">
+               <h1 class="text-[11px] font-black text-white uppercase tracking-[0.5em] italic opacity-80">Reporte de Cierre de Gestión</h1>
+           </div>
+           <div class="bg-white/10 border border-white/20 px-6 py-2 rounded text-[10px] font-bold text-white uppercase italic tracking-widest">ChatCenter</div>
+       </div>
+   </header>
+
+
+   <!-- MENÚ PRINCIPAL STICKY -->
+   <nav class="sticky-nav px-8">
+       <div class="max-w-[1600px] mx-auto flex justify-center">
+           <button onclick="switchMainTab('objetivo')" id="main-btn-objetivo" class="main-nav-btn active">Objetivo y Alcance</button>
+           <button onclick="switchMainTab('icp')" id="main-btn-icp" class="main-nav-btn">ICP</button>
+           <button class="main-nav-btn cursor-not-allowed opacity-50">Perfiles</button>
+           <button class="main-nav-btn cursor-not-allowed opacity-50">Campañas</button>
+           <button class="main-nav-btn cursor-not-allowed opacity-50">Entregables</button>
+       </div>
+   </nav>
+
+
+   <main class="max-w-[1600px] mx-auto p-12">
+      
+       <!-- SECCIÓN 1: OBJETIVO Y ALCANCE -->
+       <div id="main-tab-objetivo" class="main-tab-content active">
+           <div class="flex justify-between items-end mb-12">
+               <div>
+                   <h2 class="text-5xl font-black text-slate-900 uppercase italic tracking-tighter leading-none">1. Objetivo y Alcance</h2>
+                   <p class="text-slate-400 font-bold uppercase tracking-widest text-sm mt-3">Contraste de metas vs resultados reales</p>
+               </div>
+               <div class="sub-nav-container">
+                   <button onclick="switchSubTab('iql')" id="sub-btn-iql" class="sub-nav-btn active">1. Métrica IQL</button>
+                   <button onclick="switchSubTab('reuniones')" id="sub-btn-reuniones" class="sub-nav-btn">2. Gestión Reuniones</button>
+               </div>
+           </div>
+
+
+           <div id="sub-tab-iql" class="tab-content active">
+               <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                   <div class="lg:col-span-4 flex flex-col gap-6">
+                       <div class="dark-card relative overflow-hidden">
+                           <span class="absolute top-8 right-8 bg-emerald-500 text-[10px] font-black px-4 py-1.5 rounded-full text-white uppercase">Overperformance</span>
+                           <h3 class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-6 italic">Total Logrado (6 Meses)</h3>
+                           <div class="text-9xl font-black tracking-tighter italic leading-none mb-12">93 <span class="text-4xl not-italic text-slate-500 font-light">IQLS</span></div>
+                           <div class="grid grid-cols-2 gap-4 mb-10">
+                               <div class="bg-white/5 border border-white/10 rounded-3xl p-6 text-center">
+                                   <div class="text-[9px] font-bold text-blue-300 uppercase mb-2">Vs Meta 6M</div>
+                                   <div class="text-4xl font-black text-emerald-400">116%</div>
+                               </div>
+                               <div class="bg-white/5 border border-white/10 rounded-3xl p-6 text-center">
+                                   <div class="text-[9px] font-bold text-blue-300 uppercase mb-2">Vs Meta 12M</div>
+                                   <div class="text-4xl font-black text-blue-500">58%</div>
+                               </div>
+                           </div>
+                           <div class="bg-blue-600 rounded-[2rem] p-8 flex items-center justify-between shadow-xl">
+                               <div>
+                                   <h4 class="text-xl font-black uppercase italic tracking-tighter">Proyección Anual</h4>
+                                   <p class="text-[10px] font-bold text-blue-200 uppercase italic">Tendencia a 12 meses</p>
+                               </div>
+                               <div class="text-right">
+                                   <div class="text-6xl font-black tracking-tighter leading-none">186</div>
+                                   <div class="text-[10px] font-black bg-white/20 px-2 py-1 rounded mt-2 uppercase">+16% s/Objetivo</div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="lg:col-span-8 chart-wrapper">
+                       <div class="flex justify-between items-center mb-10">
+                           <h3 class="text-2xl font-black text-slate-800 uppercase italic">Evolución Mensual</h3>
+                           <div class="flex gap-6 text-[10px] font-bold uppercase text-slate-400 italic">
+                               <span class="flex items-center gap-2"><span class="w-3 h-1 bg-red-400 rounded-full"></span> Objetivo</span>
+                               <span class="flex items-center gap-2"><span class="w-3 h-1 bg-emerald-400 rounded-full"></span> Tendencia</span>
+                           </div>
+                       </div>
+                       <div style="height: 450px;">
+                           <canvas id="chartIQL"></canvas>
+                       </div>
+                   </div>
+               </div>
+           </div>
+
+
+           <div id="sub-tab-reuniones" class="tab-content">
+               <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                   <div class="dark-card">
+                       <h3 class="text-blue-400 text-[10px] font-black uppercase italic mb-12 tracking-widest">Rango de Metas Estimado (6 Meses)</h3>
+                       <div class="range-bar-bg mb-6">
+                           <div class="range-highlight" style="left: 20%; width: 50%;"></div>
+                           <div class="marker-line bg-blue-500" style="left: 32%;">
+                               <div class="marker-tag bg-blue-600 text-white uppercase">Real: 21</div>
+                           </div>
+                       </div>
+                       <div class="flex justify-between text-[11px] font-black text-slate-500 uppercase italic">
+                           <span style="margin-left: 18%">16</span>
+                           <span class="text-slate-400">Meta: 20% - 45% S/IQL</span>
+                           <span style="margin-right: 28%">36</span>
+                       </div>
+                   </div>
+                   <div class="dark-card">
+                       <h3 class="text-amber-400 text-[10px] font-black uppercase italic mb-12 tracking-widest">Rango de Metas Estimado (Anual)</h3>
+                       <div class="range-bar-bg mb-6">
+                           <div class="range-highlight" style="left: 20%; width: 50%;"></div>
+                           <div class="marker-line bg-amber-400" style="left: 35%;">
+                               <div class="marker-tag bg-amber-400 text-black uppercase">Potencial: 43</div>
+                           </div>
+                       </div>
+                       <div class="flex justify-between text-[11px] font-black text-slate-500 uppercase italic">
+                           <span style="margin-left: 18%">32</span>
+                           <span class="text-slate-400">Meta Anual S/160 IQL</span>
+                           <span style="margin-right: 28%">72</span>
+                       </div>
+                   </div>
+               </div>
+               <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                   <div class="lg:col-span-4 flex flex-col gap-4">
+                       <div class="bg-white p-8 rounded-[3rem] shadow-sm border border-slate-100 flex-1 flex flex-col">
+                           <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-8 text-center italic border-b pb-4">Eficiencia Consolidada</h3>
+                           <div class="space-y-4 flex-1">
+                               <div class="bg-slate-50 p-6 rounded-3xl border border-slate-100 flex justify-between items-center px-8">
+                                   <div class="text-[10px] font-black text-slate-400 uppercase tracking-wider">IQL's Totales</div>
+                                   <div class="text-4xl font-black text-slate-900 italic">93</div>
+                               </div>
+                               <div class="bg-blue-50 p-6 rounded-3xl border border-blue-100 flex justify-between items-center px-8">
+                                   <div>
+                                       <div class="text-[10px] font-black text-blue-500 uppercase tracking-wider">Perfil Listos</div>
+                                       <div class="text-[11px] font-bold text-blue-400/80 uppercase mt-1 italic">Tasa: 46.2%</div>
+                                   </div>
+                                   <div class="text-4xl font-black text-blue-600 italic">43</div>
+                               </div>
+                               <div class="bg-emerald-50 p-6 rounded-3xl border border-emerald-100 flex justify-between items-center px-8">
+                                   <div>
+                                       <div class="text-[10px] font-black text-emerald-500 uppercase tracking-wider">Reuniones</div>
+                                       <div class="text-[11px] font-bold text-emerald-400/80 uppercase mt-1 italic">Conv: 48.8%</div>
+                                   </div>
+                                   <div class="text-4xl font-black text-emerald-600 italic">21</div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="lg:col-span-8">
+                       <div class="table-card">
+                           <h2 class="text-3xl font-black text-slate-900 italic uppercase mb-2">Trazabilidad Mensual</h2>
+                           <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest italic mb-12">Desglose de funnel y conversión</p>
+                           <table>
+                               <thead>
+                                   <tr>
+                                       <th>Mes</th>
+                                       <th class="text-center">IQL'S</th>
+                                       <th class="text-center text-blue-600">Listos</th>
+                                       <th class="text-center">% LST/IQL</th>
+                                       <th class="text-center text-emerald-600">Realiz.</th>
+                                       <th class="text-center">% REA/LST</th>
+                                       <th class="text-center text-amber-500">Por Agend.</th>
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                   <tr><td class="row-month">Septiembre</td><td class="text-center">14</td><td class="text-center text-blue-600">7</td><td class="text-center">50.0%</td><td class="text-center text-emerald-600">1</td><td class="text-center">14.3%</td><td class="text-center text-amber-500">6</td></tr>
+                                   <tr><td class="row-month">Octubre</td><td class="text-center">20</td><td class="text-center text-blue-600">14</td><td class="text-center">70.0%</td><td class="text-center text-emerald-600">5</td><td class="text-center">35.7%</td><td class="text-center text-amber-500">9</td></tr>
+                                   <tr><td class="row-month">Noviembre</td><td class="text-center">8</td><td class="text-center text-blue-600">3</td><td class="text-center">37.5%</td><td class="text-center text-emerald-600">3</td><td class="text-center">100.0%</td><td class="text-center text-amber-500">0</td></tr>
+                                   <tr><td class="row-month">Diciembre</td><td class="text-center">12</td><td class="text-center text-blue-600">1</td><td class="text-center">8.3%</td><td class="text-center text-emerald-600">1</td><td class="text-center">100.0%</td><td class="text-center text-amber-500">0</td></tr>
+                                   <tr><td class="row-month">Enero</td><td class="text-center">18</td><td class="text-center text-blue-600">6</td><td class="text-center">33.3%</td><td class="text-center text-emerald-600">2</td><td class="text-center">33.3%</td><td class="text-center text-amber-500">4</td></tr>
+                                   <tr><td class="row-month">Febrero</td><td class="text-center">21</td><td class="text-center text-blue-600">12</td><td class="text-center">57.1%</td><td class="text-center text-emerald-600">9</td><td class="text-center">75.0%</td><td class="text-center text-amber-500">3</td></tr>
+                                   <tr class="total-row">
+                                       <td class="italic pl-10">TOTAL 6M</td>
+                                       <td class="text-center">93</td>
+                                       <td class="text-center">43</td>
+                                       <td class="text-center">46.2%</td>
+                                       <td class="text-center">21</td>
+                                       <td class="text-center">48.8%</td>
+                                       <td class="text-center pr-10">22</td>
+                                   </tr>
+                               </tbody>
+                           </table>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+
+
+       <!-- SECCIÓN 2: ICP -->
+       <div id="main-tab-icp" class="main-tab-content" style="display: none;">
+           <div class="flex justify-between items-end mb-12">
+               <div>
+                   <h2 class="text-5xl font-black text-slate-900 uppercase italic tracking-tighter leading-none">2. Perfil de Cliente Ideal (ICP)</h2>
+                   <p class="text-slate-400 font-bold uppercase tracking-widest text-sm mt-3">Estrategia de segmentación Enterprise B2C</p>
+               </div>
+           </div>
+
+
+           <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+               <!-- Resumen Ejecutivo Superior -->
+               <div class="lg:col-span-12 dark-card mb-4 flex flex-col md:flex-row gap-8 items-center justify-between bg-gradient-to-r from-slate-900 to-blue-900">
+                   <div class="max-w-3xl">
+                       <h3 class="text-2xl font-bold mb-4">Objetivo Estratégico</h3>
+                       <p class="text-slate-300 text-sm leading-relaxed">
+                           Identificar y segmentar empresas Enterprise B2C con alto potencial de adopción. Enfoque en organizaciones que buscan incrementar ventas y optimizar costos mediante la automatización conversacional con **IA + Supervisión Humana 24/7**, bajo un modelo de **Revenue Share**.
+                       </p>
+                   </div>
+                   <div class="flex gap-4">
+                       <div class="bg-white/10 px-6 py-4 rounded-2xl text-center border border-white/10">
+                           <div class="text-[10px] uppercase font-bold text-blue-400 mb-1">Ciclo Venta</div>
+                           <div class="text-2xl font-black">6-12 m</div>
+                       </div>
+                       <div class="bg-white/10 px-6 py-4 rounded-2xl text-center border border-white/10">
+                           <div class="text-[10px] uppercase font-bold text-emerald-400 mb-1">Ticket Prom.</div>
+                           <div class="text-2xl font-black">100K-500K</div>
+                       </div>
+                   </div>
+               </div>
+
+
+               <div class="lg:col-span-4 space-y-8">
+                   <div class="table-card">
+                       <div class="icp-grid-icon"><span class="text-blue-600 font-black">🌍</span></div>
+                       <h4 class="text-lg font-black uppercase italic mb-4">Presencia Regional</h4>
+                       <div class="flex flex-wrap gap-2">
+                           <span class="tag-blue">Argentina</span>
+                           <span class="tag-blue">Brasil</span>
+                           <span class="tag-blue">Colombia</span>
+                           <span class="tag-blue">México</span>
+                           <span class="tag-blue">Perú</span>
+                       </div>
+                       <div class="mt-8 pt-6 border-t border-slate-100">
+                           <div class="flex justify-between items-center mb-2">
+                               <span class="text-xs font-bold text-slate-500 uppercase">Tamaño Empresa</span>
+                               <span class="text-xs font-black text-blue-600 uppercase">+500 Empleados</span>
+                           </div>
+                           <div class="flex justify-between items-center">
+                               <span class="text-xs font-bold text-slate-500 uppercase">Modelo Negocio</span>
+                               <span class="text-xs font-black text-blue-600 uppercase italic">Enterprise B2C</span>
+                           </div>
+                       </div>
+                   </div>
+
+
+                   <div class="dark-card bg-slate-900">
+                       <h4 class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-6 italic">Puntos de Dolor (Pain Points)</h4>
+                       <ul class="space-y-4">
+                           <li class="flex items-start gap-3">
+                               <span class="text-blue-400 mt-1">▸</span>
+                               <p class="text-[11px] font-bold text-slate-300 uppercase">Altos costos en canales tradicionales.</p>
+                           </li>
+                           <li class="flex items-start gap-3">
+                               <span class="text-blue-400 mt-1">▸</span>
+                               <p class="text-[11px] font-bold text-slate-300 uppercase">Dificultad para escalar ventas digitales.</p>
+                           </li>
+                           <li class="flex items-start gap-3">
+                               <span class="text-blue-400 mt-1">▸</span>
+                               <p class="text-[11px] font-bold text-slate-300 uppercase">Presión competitiva por automatización.</p>
+                           </li>
+                           <li class="flex items-start gap-3">
+                               <span class="text-blue-400 mt-1">▸</span>
+                               <p class="text-[11px] font-bold text-slate-300 uppercase">Desalineación entre IA y Talento Humano.</p>
+                           </li>
+                       </ul>
+                   </div>
+               </div>
+
+
+               <div class="lg:col-span-8 flex flex-col gap-8">
+                   <div class="table-card flex-1">
+                       <h4 class="text-xl font-black uppercase italic mb-8 border-b pb-4">Estructura de Decisión (C-Level & VPs)</h4>
+                       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                           <div>
+                               <h5 class="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-4">Key Decision Makers</h5>
+                               <div class="grid grid-cols-2 gap-2">
+                                   <div class="bg-slate-50 p-3 rounded-xl text-center text-[10px] font-black uppercase">CEO</div>
+                                   <div class="bg-slate-50 p-3 rounded-xl text-center text-[10px] font-black uppercase">CPO</div>
+                                   <div class="bg-slate-50 p-3 rounded-xl text-center text-[10px] font-black uppercase">CTO</div>
+                                   <div class="bg-slate-50 p-3 rounded-xl text-center text-[10px] font-black uppercase">CMO</div>
+                                   <div class="bg-slate-50 p-3 rounded-xl text-center text-[10px] font-black uppercase col-span-2">VPs Ventas/Marketing</div>
+                               </div>
+                           </div>
+                           <div>
+                               <h5 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Influenciadores / Operación</h5>
+                               <ul class="text-[11px] font-bold text-slate-600 space-y-2 italic">
+                                   <li>• Directores de Innovación</li>
+                                   <li>• Transformación Digital y Tecnología</li>
+                                   <li>• Customer Experience (CX)</li>
+                                   <li>• Gerentes de Operaciones Digitales</li>
+                               </ul>
+                           </div>
+                       </div>
+                      
+                       <div class="mt-12">
+                           <h5 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">Sectores Foco</h5>
+                           <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                               <div class="industry-card p-4 rounded-2xl text-center">
+                                   <div class="text-2xl mb-2">📞</div>
+                                   <div class="text-[9px] font-black uppercase">Telecom</div>
+                               </div>
+                               <div class="industry-card p-4 rounded-2xl text-center">
+                                   <div class="text-2xl mb-2">🛡️</div>
+                                   <div class="text-[9px] font-black uppercase">Seguros</div>
+                               </div>
+                               <div class="industry-card p-4 rounded-2xl text-center">
+                                   <div class="text-2xl mb-2">🛍️</div>
+                                   <div class="text-[9px] font-black uppercase">Retail</div>
+                               </div>
+                               <div class="industry-card p-4 rounded-2xl text-center">
+                                   <div class="text-2xl mb-2">🏦</div>
+                                   <div class="text-[9px] font-black uppercase">Finanzas</div>
+                               </div>
+                               <div class="industry-card p-4 rounded-2xl text-center">
+                                   <div class="text-2xl mb-2">🏥</div>
+                                   <div class="text-[9px] font-black uppercase">Health</div>
+                               </div>
+                           </div>
+
+
+                           <div class="strategic-note">
+                               <div class="flex items-center gap-3 mb-2">
+                                   <span class="bg-amber-500 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase">Nota de Ejecución</span>
+                                   <span class="text-[10px] font-black text-amber-600 uppercase tracking-widest italic">Ajuste de Segmentación</span>
+                               </div>
+                               <p class="text-xs font-bold text-amber-900 leading-relaxed italic">
+                                   Entre el segundo y tercer mes de ejecución, el enfoque por industrias verticales se ajustó a un modelo **Cross**, permitiendo mayor flexibilidad y captación de oportunidades en cualquier sector con volumen Enterprise B2C.
+                               </p>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+
+
+   </main>
+
+
+   <script>
+       Chart.register(ChartDataLabels);
+
+
+       function switchMainTab(tab) {
+           document.querySelectorAll('.main-tab-content').forEach(el => el.style.display = 'none');
+           document.querySelectorAll('.main-nav-btn').forEach(el => el.classList.remove('active'));
+           document.getElementById(`main-tab-${tab}`).style.display = 'block';
+           document.getElementById(`main-btn-${tab}`).classList.add('active');
+          
+           // Volver arriba al cambiar de pestaña
+           window.scrollTo({ top: 0, behavior: 'smooth' });
+       }
+
+
+       function switchSubTab(tab) {
+           document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+           document.querySelectorAll('.sub-nav-btn').forEach(el => el.classList.remove('active'));
+           document.getElementById(`sub-tab-${tab}`).classList.add('active');
+           document.getElementById(`sub-btn-${tab}`).classList.add('active');
+       }
+
+
+       const ctxIQL = document.getElementById('chartIQL').getContext('2d');
+       new Chart(ctxIQL, {
+           type: 'bar',
+           data: {
+               labels: ['Sept', 'Oct', 'Nov', 'Dic', 'Ene', 'Feb'],
+               datasets: [
+                   {
+                       label: 'IQL Real',
+                       data: [14, 20, 8, 12, 18, 21],
+                       backgroundColor: '#2563eb',
+                       borderRadius: 12,
+                       barThickness: 50,
+                       datalabels: { anchor: 'end', align: 'top', color: '#1e293b', font: { weight: '800', size: 16 }, offset: 4 }
+                   },
+                   {
+                       label: 'Tendencia',
+                       data: [13, 16, 14, 14, 18, 21.5],
+                       type: 'line',
+                       borderColor: '#34d399',
+                       borderWidth: 5,
+                       pointRadius: 0,
+                       tension: 0.4,
+                       datalabels: { display: false }
+                   },
+                   {
+                       label: 'Objetivo',
+                       data: [13.3, 13.3, 13.3, 13.3, 13.3, 13.3],
+                       type: 'line',
+                       borderColor: '#f87171',
+                       borderDash: [8, 4],
+                       borderWidth: 2,
+                       pointRadius: 0,
+                       datalabels: { display: false }
+                   }
+               ]
+           },
+           options: {
+               responsive: true,
+               maintainAspectRatio: false,
+               plugins: { legend: { display: false } },
+               scales: {
+                   y: { beginAtZero: true, max: 25, grid: { color: '#f1f5f9' }, ticks: { font: { weight: '800' } } },
+                   x: { grid: { display: false }, ticks: { font: { weight: '800', size: 14 }, color: '#64748b' } }
+               }
+           }
+       });
+   </script>
+</body>
+</html>
+
