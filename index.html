@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- ✅ Esto es lo que ves como “vista previa / título” en pestaña y share -->
+  <!-- ✅ Título pestaña / vista previa -->
   <title>ChatCenter - Reporte de Cierre</title>
   <meta name="title" content="ChatCenter - Reporte de Cierre" />
   <meta property="og:title" content="ChatCenter - Reporte de Cierre" />
@@ -19,104 +19,49 @@
   <style>
     body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #0f172a; margin: 0; }
 
-    /* Cabecera Negra Superior */
-    .black-header {
-      background-color: #0f172a;
-      color: white;
-      padding: 0.75rem 2rem;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      z-index: 60;
-    }
+    .black-header { background-color: #0f172a; color: white; padding: 0.75rem 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 60; }
 
-    /* Menú de Navegación Sticky */
     .sticky-nav {
-      position: sticky;
-      top: 0;
-      background: white;
-      border-bottom: 1px solid #f1f5f9;
-      z-index: 50;
-      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+      position: sticky; top: 0; background: white; border-bottom: 1px solid #f1f5f9;
+      z-index: 50; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
     }
 
     .main-nav-btn {
-      font-size: 10px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      padding: 1.25rem 1.5rem;
-      color: #94a3b8;
-      transition: all 0.3s;
-      border-bottom: 3px solid transparent;
+      font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;
+      padding: 1.25rem 1.5rem; color: #94a3b8; transition: all 0.3s; border-bottom: 3px solid transparent;
     }
-    .main-nav-btn.active {
-      color: #2563eb;
-      border-bottom-color: #2563eb;
-    }
-    .main-nav-btn:hover:not(.active) {
-      color: #64748b;
-    }
+    .main-nav-btn.active { color: #2563eb; border-bottom-color: #2563eb; }
+    .main-nav-btn:hover:not(.active) { color: #64748b; }
 
-    .sub-nav-container {
-      background: #1e293b;
-      padding: 4px;
-      border-radius: 12px;
-      display: inline-flex;
-      gap: 4px;
-    }
+    .sub-nav-container { background: #1e293b; padding: 4px; border-radius: 12px; display: inline-flex; gap: 4px; }
     .sub-nav-btn {
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 10px;
-      font-weight: 800;
-      text-transform: uppercase;
-      color: #94a3b8;
-      transition: all 0.2s;
+      padding: 8px 16px; border-radius: 8px; font-size: 10px; font-weight: 800; text-transform: uppercase;
+      color: #94a3b8; transition: all 0.2s;
     }
-    .sub-nav-btn.active {
-      background: #2563eb;
-      color: white;
-    }
+    .sub-nav-btn.active { background: #2563eb; color: white; }
 
     .dark-card {
-      background: #0f172a;
-      border-radius: 2.5rem;
-      padding: 2.5rem;
-      color: white;
+      background: #0f172a; border-radius: 2.5rem; padding: 2.5rem; color: white;
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
     }
 
     .range-bar-bg {
       background: rgba(255, 255, 255, 0.05);
-      height: 32px;
-      border-radius: 16px;
-      position: relative;
-      overflow: visible;
+      height: 32px; border-radius: 16px; position: relative; overflow: visible;
       border: 1px solid rgba(255,255,255,0.1);
     }
     .range-highlight {
-      position: absolute;
-      height: 100%;
+      position: absolute; height: 100%;
       background: rgba(16, 185, 129, 0.15);
-      border-left: 1px solid #10b981;
-      border-right: 1px solid #10b981;
+      border-left: 1px solid #10b981; border-right: 1px solid #10b981;
     }
     .marker-line {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      z-index: 20;
+      position: absolute; top: 0; bottom: 0; width: 3px; z-index: 20;
       box-shadow: 0 0 15px rgba(37, 99, 235, 0.5);
     }
     .marker-tag {
-      position: absolute;
-      top: -30px;
-      transform: translateX(-50%);
-      font-size: 10px;
-      font-weight: 900;
-      padding: 4px 10px;
-      border-radius: 6px;
-      white-space: nowrap;
+      position: absolute; top: -30px; transform: translateX(-50%);
+      font-size: 10px; font-weight: 900; padding: 4px 10px; border-radius: 6px; white-space: nowrap;
     }
 
     .table-card { background: white; border-radius: 3rem; padding: 3rem; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
@@ -133,25 +78,16 @@
     .tab-content.active { display: block; }
 
     .icp-grid-icon {
-      width: 40px;
-      height: 40px;
-      background: #f1f5f9;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1rem;
+      width: 40px; height: 40px; background: #f1f5f9; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;
     }
     .tag-blue { background: #eff6ff; color: #2563eb; padding: 4px 12px; border-radius: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
     .industry-card { border: 1px solid #f1f5f9; transition: all 0.3s; }
     .industry-card:hover { border-color: #2563eb; transform: translateY(-2px); }
 
     .strategic-note {
-      background: #fffbeb;
-      border-left: 4px solid #f59e0b;
-      padding: 1.5rem;
-      border-radius: 0 1.5rem 1.5rem 0;
-      margin-top: 2rem;
+      background: #fffbeb; border-left: 4px solid #f59e0b; padding: 1.5rem;
+      border-radius: 0 1.5rem 1.5rem 0; margin-top: 2rem;
     }
 
     /* Perfiles */
@@ -173,7 +109,6 @@
   <!-- FRANJA NEGRA SUPERIOR -->
   <header class="black-header">
     <div class="max-w-[1600px] mx-auto flex justify-between items-center">
-      <!-- ✅ Logo MTI (desde tu repo) -->
       <div class="flex items-center gap-3">
         <img src="mti-logo.png" alt="MTI Selling" class="h-10 w-auto opacity-95" />
         <div class="bg-white/10 border border-white/20 px-6 py-2 rounded text-[10px] font-bold text-white uppercase italic tracking-widest">MTI Selling</div>
@@ -185,7 +120,6 @@
         </h1>
       </div>
 
-      <!-- ✅ Logo ChatCenter (desde tu repo) -->
       <div class="flex items-center gap-3">
         <div class="bg-white/10 border border-white/20 px-6 py-2 rounded text-[10px] font-bold text-white uppercase italic tracking-widest">ChatCenter</div>
         <img src="chatcenter_logo.png" alt="ChatCenter" class="h-10 w-auto opacity-95" />
@@ -324,7 +258,7 @@
                   <div class="text-4xl font-black text-emerald-600 italic">21</div>
                 </div>
 
-                <!-- ✅ CAMBIO PEDIDO: Pipeline adicional -->
+                <!-- ✅ Pipeline adicional -->
                 <div class="bg-amber-50 p-6 rounded-3xl border border-amber-100 px-8">
                   <div class="flex items-center justify-between">
                     <div class="text-[10px] font-black text-amber-600 uppercase tracking-wider">Pipeline adicional (FUP & Nurturing)</div>
@@ -341,7 +275,7 @@
                     </div>
                   </div>
                 </div>
-                <!-- ✅ FIN CAMBIO -->
+                <!-- ✅ FIN -->
               </div>
             </div>
           </div>
@@ -382,6 +316,7 @@
               </table>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -515,12 +450,11 @@
         </div>
       </div>
 
-      <!-- Catalina (Top IQL) -->
+      <!-- Catalina -->
       <div class="profile-card mb-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           <div class="lg:col-span-3">
             <div class="flex items-center gap-5">
-              <!-- ⚠️ Si tu archivo tiene espacio, GitHub Pages lo sirve como %20 -->
               <img src="Cata%20Foto.jpeg" class="profile-photo" alt="Catalina" />
               <div>
                 <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Perfil</div>
@@ -571,44 +505,32 @@
                 <span class="pill bg-white text-slate-700 border border-slate-200">Hoy marcado en azul</span>
               </div>
 
-              <!-- Aceptación -->
               <div class="mb-6">
-                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2">
-                  <span>Aceptación</span><span>25% — 38%</span>
-                </div>
-                <div class="range-bar-bg !background:rgba(15,23,42,0.03); border !border-slate-200" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
+                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Aceptación</span><span>25% — 38%</span></div>
+                <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
                   <div class="range-highlight" style="left: 25%; width: 13%;"></div>
                   <div class="marker-line bg-blue-600" style="left: 35%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 35%</div></div>
                 </div>
               </div>
 
-              <!-- Respuesta -->
               <div class="mb-6">
-                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2">
-                  <span>Respuesta</span><span>27% — 35%</span>
-                </div>
+                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Respuesta</span><span>27% — 35%</span></div>
                 <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
                   <div class="range-highlight" style="left: 27%; width: 8%;"></div>
                   <div class="marker-line bg-blue-600" style="left: 30%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 30%</div></div>
                 </div>
               </div>
 
-              <!-- Interés -->
               <div class="mb-6">
-                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2">
-                  <span>Interés</span><span>15% — 18%</span>
-                </div>
+                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Interés</span><span>15% — 18%</span></div>
                 <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
                   <div class="range-highlight" style="left: 15%; width: 3%;"></div>
                   <div class="marker-line bg-blue-600" style="left: 16%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 16%</div></div>
                 </div>
               </div>
 
-              <!-- Conversión -->
               <div>
-                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2">
-                  <span>Conversión</span><span>18% — 28%</span>
-                </div>
+                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Conversión</span><span>18% — 28%</span></div>
                 <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
                   <div class="range-highlight" style="left: 18%; width: 10%;"></div>
                   <div class="marker-line bg-blue-600" style="left: 27%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 27%</div></div>
@@ -750,12 +672,11 @@
         </div>
       </div>
 
-      <!-- Gonzalo -->
+      <!-- Gonzalo (✅ agregado seguidores + top posts) -->
       <div class="profile-card mb-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           <div class="lg:col-span-3">
             <div class="flex items-center gap-5">
-              <!-- ⚠️ Renombrá luego a un nombre sin espacios si querés -->
               <div class="profile-photo flex items-center justify-center text-slate-400 font-black text-xl">G</div>
               <div>
                 <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Perfil</div>
@@ -765,8 +686,19 @@
                 </div>
               </div>
             </div>
-            <div class="mt-8 text-[11px] font-bold text-slate-500 italic">
-              Métricas de LinkedIn (impresiones / interacciones / seguidores) pendientes de captura.
+
+            <!-- ✅ Solo seguidores (sin evolución) -->
+            <div class="mt-8 grid grid-cols-1 gap-3">
+              <div class="mini-kpi">
+                <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Seguidores</div>
+                <div class="flex items-end justify-between mt-2">
+                  <div class="text-2xl font-black text-slate-900 italic">30.301</div>
+                  <div class="text-[11px] font-black text-slate-400 italic">sin evolución</div>
+                </div>
+              </div>
+              <div class="text-[11px] font-bold text-slate-500 italic">
+                Impresiones / Interacciones: pendiente (no hay captura de evolución).
+              </div>
             </div>
           </div>
 
@@ -815,89 +747,27 @@
           </div>
 
           <div class="lg:col-span-3">
-            <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Top 3 posteos</div>
+            <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Top 3 posteos (por impresiones)</div>
             <div class="space-y-3">
-              <div class="post-card"><div class="text-[11px] font-black text-slate-700">Pendiente</div><div class="mt-3 text-[11px] font-black text-emerald-700">— impresiones</div></div>
-              <div class="post-card"><div class="text-[11px] font-black text-slate-700">Pendiente</div><div class="mt-3 text-[11px] font-black text-emerald-700">— impresiones</div></div>
-              <div class="post-card"><div class="text-[11px] font-black text-slate-700">Pendiente</div><div class="mt-3 text-[11px] font-black text-emerald-700">— impresiones</div></div>
+              <div class="post-card">
+                <div class="text-[11px] font-black text-slate-700">Mucho de lo que hoy se dice sobre IA es una promesa inflada…</div>
+                <div class="mt-3 text-[11px] font-black text-emerald-700">1.151 impresiones</div>
+              </div>
+              <div class="post-card">
+                <div class="text-[11px] font-black text-slate-700">Una de las cosas que más disfruto hacer es andar en bicicleta…</div>
+                <div class="mt-3 text-[11px] font-black text-emerald-700">939 impresiones</div>
+              </div>
+              <div class="post-card">
+                <div class="text-[11px] font-black text-slate-700">En mi día a día me encuentro con muchas empresas que afirman…</div>
+                <div class="mt-3 text-[11px] font-black text-emerald-700">472 impresiones</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Martin -->
+      <!-- Ramiro (✅ va antes que Martin) -->
       <div class="profile-card mb-8">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-          <div class="lg:col-span-3">
-            <div class="flex items-center gap-5">
-              <div class="profile-photo flex items-center justify-center text-slate-400 font-black text-xl">M</div>
-              <div>
-                <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Perfil</div>
-                <div class="text-2xl font-black text-slate-900 italic">Martin</div>
-                <div class="mt-3 inline-flex items-center gap-3">
-                  <span class="pill bg-emerald-50 text-emerald-700 border border-emerald-100">IQL: 6</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="lg:col-span-6">
-            <div class="bg-slate-50 border border-slate-100 rounded-[2.5rem] p-8">
-              <div class="flex items-center justify-between mb-8">
-                <div>
-                  <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Rangos históricos vs hoy</div>
-                  <div class="text-xl font-black text-slate-900 italic mt-1">Aceptación • Respuesta • Interés • Conversión</div>
-                </div>
-                <span class="pill bg-white text-slate-700 border border-slate-200">Hoy marcado en azul</span>
-              </div>
-
-              <div class="mb-6">
-                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Aceptación</span><span>26% — 36%</span></div>
-                <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
-                  <div class="range-highlight" style="left: 26%; width: 10%;"></div>
-                  <div class="marker-line bg-blue-600" style="left: 36%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 36%</div></div>
-                </div>
-              </div>
-
-              <div class="mb-6">
-                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Respuesta</span><span>16% — 20%</span></div>
-                <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
-                  <div class="range-highlight" style="left: 16%; width: 4%;"></div>
-                  <div class="marker-line bg-blue-600" style="left: 20%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 20%</div></div>
-                </div>
-              </div>
-
-              <div class="mb-6">
-                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Interés</span><span>14% — 15%</span></div>
-                <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
-                  <div class="range-highlight" style="left: 14%; width: 1%;"></div>
-                  <div class="marker-line bg-blue-600" style="left: 15%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 15%</div></div>
-                </div>
-              </div>
-
-              <div>
-                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Conversión</span><span>0% — 17%</span></div>
-                <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
-                  <div class="range-highlight" style="left: 0%; width: 17%;"></div>
-                  <div class="marker-line bg-blue-600" style="left: 17%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 17%</div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="lg:col-span-3">
-            <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Top 3 posteos</div>
-            <div class="space-y-3">
-              <div class="post-card"><div class="text-[11px] font-black text-slate-700">Pendiente</div><div class="mt-3 text-[11px] font-black text-emerald-700">— impresiones</div></div>
-              <div class="post-card"><div class="text-[11px] font-black text-slate-700">Pendiente</div><div class="mt-3 text-[11px] font-black text-emerald-700">— impresiones</div></div>
-              <div class="post-card"><div class="text-[11px] font-black text-slate-700">Pendiente</div><div class="mt-3 text-[11px] font-black text-emerald-700">— impresiones</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Ramiro -->
-      <div class="profile-card">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           <div class="lg:col-span-3">
             <div class="flex items-center gap-5">
@@ -1005,6 +875,72 @@
         </div>
       </div>
 
+      <!-- Martin (✅ último, sin métricas adicionales) -->
+      <div class="profile-card">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          <div class="lg:col-span-3">
+            <div class="flex items-center gap-5">
+              <div class="profile-photo flex items-center justify-center text-slate-400 font-black text-xl">M</div>
+              <div>
+                <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Perfil</div>
+                <div class="text-2xl font-black text-slate-900 italic">Martin</div>
+                <div class="mt-3 inline-flex items-center gap-3">
+                  <span class="pill bg-emerald-50 text-emerald-700 border border-emerald-100">IQL: 6</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-8 text-[11px] font-bold text-slate-500 italic">
+              Sin acceso al resto de métricas de LinkedIn (impresiones / interacciones / seguidores / top posts).
+            </div>
+          </div>
+
+          <div class="lg:col-span-9">
+            <div class="bg-slate-50 border border-slate-100 rounded-[2.5rem] p-8">
+              <div class="flex items-center justify-between mb-8">
+                <div>
+                  <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Rangos históricos vs hoy</div>
+                  <div class="text-xl font-black text-slate-900 italic mt-1">Aceptación • Respuesta • Interés • Conversión</div>
+                </div>
+                <span class="pill bg-white text-slate-700 border border-slate-200">Hoy marcado en azul</span>
+              </div>
+
+              <div class="mb-6">
+                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Aceptación</span><span>26% — 36%</span></div>
+                <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
+                  <div class="range-highlight" style="left: 26%; width: 10%;"></div>
+                  <div class="marker-line bg-blue-600" style="left: 36%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 36%</div></div>
+                </div>
+              </div>
+
+              <div class="mb-6">
+                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Respuesta</span><span>16% — 20%</span></div>
+                <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
+                  <div class="range-highlight" style="left: 16%; width: 4%;"></div>
+                  <div class="marker-line bg-blue-600" style="left: 20%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 20%</div></div>
+                </div>
+              </div>
+
+              <div class="mb-6">
+                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Interés</span><span>14% — 15%</span></div>
+                <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
+                  <div class="range-highlight" style="left: 14%; width: 1%;"></div>
+                  <div class="marker-line bg-blue-600" style="left: 15%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 15%</div></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-[11px] font-black text-slate-600 uppercase italic mb-2"><span>Conversión</span><span>0% — 17%</span></div>
+                <div class="range-bar-bg" style="background: rgba(15,23,42,0.03); border-color:#e2e8f0;">
+                  <div class="range-highlight" style="left: 0%; width: 17%;"></div>
+                  <div class="marker-line bg-blue-600" style="left: 17%;"><div class="marker-tag bg-blue-600 text-white uppercase">Hoy: 17%</div></div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </main>
@@ -1075,7 +1011,7 @@
       }
     });
 
-    // ✅ Sparklines (mini gráficos) — son ejemplos de forma (podés ajustar puntos luego)
+    // Sparklines (mini gráficos)
     function sparkline(canvasId, points) {
       const el = document.getElementById(canvasId);
       if (!el) return;
@@ -1091,17 +1027,17 @@
       });
     }
 
-    // Juliana (subida fuerte desde ene)
+    // Juliana
     sparkline('spark_juli_imp', [0,1,2,3,5,9,13,16,19,24]);
     sparkline('spark_juli_eng', [0,0,1,1,2,4,6,8,9,10]);
     sparkline('spark_juli_fol', [0,0,0,1,2,3,4,6,8,9]);
 
-    // Ramiro (arranque dic y salto en ene)
+    // Ramiro
     sparkline('spark_rami_imp', [0,0,1,1,2,8,10,11,12,13]);
     sparkline('spark_rami_eng', [0,0,0,1,1,4,5,6,7,7.5]);
     sparkline('spark_rami_fol', [0,0,0,1,2,3,3.2,3.4,4.2,4.5]);
 
-    // Catalina placeholders (cuando me pases capturas, pegamos valores)
+    // Catalina placeholders (hasta tener captura real)
     sparkline('spark_cat_imp', [0,1,2,3,5,7,9,12,14,16]);
     sparkline('spark_cat_eng', [0,0,1,1,2,3,4,5,6,7]);
     sparkline('spark_cat_fol', [0,0,0,1,1.5,2,3,4,5,6]);
